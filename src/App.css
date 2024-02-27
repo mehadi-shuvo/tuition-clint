@@ -1,0 +1,38 @@
+.main-bg {
+  background-color: #070f2b;
+}
+
+.main-btn {
+  background-color: #00ccb1;
+  border: 2px solid #00ccb1;
+  padding: 4px 8px;
+  color: white;
+}
+.main-btn-outline {
+  background-color: transparent;
+  border: 2px solid #fff;
+  padding: 4px 8px;
+  color: #fff;
+}
+.main-btn:hover {
+  background-color: transparent;
+  transition: all linear 0.4s;
+  border: 2px solid #fff;
+  color: #fff;
+}
+.main-btn-outline:hover {
+  background-color: #00ccb1;
+  transition: all linear 0.4s;
+  border: 2px solid #00ccb1;
+  color: #fff;
+}
+
+.brand-text-color {
+  color: #00ccb1;
+}
+
+.navbar-bg {
+  background: rgba(24, 24, 24, 0.473);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid #ffffff31;
+}
