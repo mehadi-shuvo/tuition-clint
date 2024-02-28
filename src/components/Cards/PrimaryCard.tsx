@@ -44,8 +44,8 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
         <div className="flex justify-center items-center">
           <Link
             to={`/${id}`}
-            className="rounded-full px-8 py-4  text-white space-x-1 bg-black mt-4 text-lg hover:bg-slate-600
-             font-bold dark:bg-zinc-800"
+            className="rounded-xl px-8 py-4  text-white space-x-1 mt-4 text-lg hover:bg-slate-600
+             font-bold bg-zinc-800"
           >
             See Details
           </Link>
