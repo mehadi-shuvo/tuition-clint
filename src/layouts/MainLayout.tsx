@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <div className="main-bg text-white">
+    <div className="main-bg text-white main-font">
       {/* =================navbar================== */}
       <Navbar />
       {/* =====================body===================== */}

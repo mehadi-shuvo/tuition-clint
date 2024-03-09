@@ -5,6 +5,8 @@ import TeacherAbout from "../pages/About/Teacher/TeacherAbout";
 import AuthLayout from "../layouts/AuthLayout";
 import TeacherRegister from "../pages/Register/TeacherRegister";
 import StudentRegister from "../pages/Register/StudentRegister";
+import Login from "../pages/Login/Login";
+import PrivateRoute from "../layouts/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +19,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/:id",
-        element: <TeacherAbout />,
+        element: (
+          <PrivateRoute>
+            <TeacherAbout />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -32,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "sign-up/student",
         element: <StudentRegister></StudentRegister>,
+      },
+      {
+        path: "login",
+        element: <Login></Login>,
       },
     ],
   },

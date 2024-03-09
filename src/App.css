@@ -5,13 +5,13 @@
 .main-btn {
   background-color: #00ccb1;
   border: 2px solid #00ccb1;
-  padding: 4px 8px;
+  padding: 4px 12px;
   color: white;
 }
 .main-btn-outline {
   background-color: transparent;
   border: 2px solid #fff;
-  padding: 4px 8px;
+  padding: 4px 12px;
   color: #fff;
 }
 .main-btn:hover {
@@ -35,4 +35,12 @@
   background: rgba(24, 24, 24, 0.473);
   backdrop-filter: blur(4px);
   border-bottom: 1px solid #ffffff31;
+}
+
+.main-font {
+  font-family: "Roboto", sans-serif;
+}
+
+.secondary-font {
+  font-family: "Madimi One", sans-serif;
 }

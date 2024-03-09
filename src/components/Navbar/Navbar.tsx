@@ -9,12 +9,14 @@ const Navbar = () => {
           <a className="text-3xl font-semibold text-white">LOGO</a>
         </div>
         <div className="flex items-center gap-5">
-          <div className="main-btn rounded-md text-lg capitalize">login</div>
+          <div className="main-btn rounded-md text-lg capitalize cursor-pointer">
+            <NavLink to={`/auth/login`}>login</NavLink>
+          </div>
           <div className="dropdown dropdown-hover dropdown-end">
             <div
               tabIndex={0}
               role="button "
-              className=" m-1 main-btn-outline rounded-md text-lg capitalize"
+              className=" m-1 main-btn-outline rounded-md text-lg capitalize cursor-pointer"
             >
               Sign Up
             </div>
@@ -26,7 +28,7 @@ const Navbar = () => {
                 <NavLink to={`/auth/sign-up/teacher`}>As a Teacher</NavLink>
               </li>
               <li className="border-b-2  rounded-sm hover:border-[#00ccb1] hover:text-[#00ccb1] text-lg font-medium">
-                <NavLink to={`/sign-up/student`}>As a Student</NavLink>
+                <NavLink to={`/auth/sign-up/student`}>As a Student</NavLink>
               </li>
             </ul>
           </div>

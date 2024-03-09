@@ -1,9 +1,9 @@
-import React from "react";
+import "../App.css";
 import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (
-    <div>
+    <div className="main-font">
       <Outlet></Outlet>
     </div>
   );
