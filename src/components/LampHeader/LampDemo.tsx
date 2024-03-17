@@ -3,10 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { LampContainer } from "../ui/lamp";
 import MagicButton from "../Buttonts/MagicButton";
+import "../../App.css";
 
 export function LampDemo() {
   return (
-    <div className="bg-slate-950 pt-28">
+    <div className="bg-slate-950">
       <LampContainer className="">
         <motion.h1
           initial={{ opacity: 0.5, y: 100 }}
@@ -16,7 +17,7 @@ export function LampDemo() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+          className="secondary-font mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
         >
           NOW GETTING THE RIGHT{" "}
           <span className="lg:block">TEACHER IS TOO EASY</span>

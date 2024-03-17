@@ -1,33 +1,12 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import "../../App.css";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  removeSubject,
-  setSubjects,
-} from "../../redux/features/register/subjectsSlice";
-import { RootState } from "../../redux/store";
-import React, { useState } from "react";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface IFormInput {
   name: string;
   email: string;
-  phone: string;
-  whatsApp: string;
-  photo: string;
-  subjects: string;
-  studentID: string;
-  description: string;
-  password: string;
-  conPass: string;
 }
 
-const TeacherRegister = () => {
-  const [selectedSubjects, setSelectedSubject] = useState("");
-  const dispatch = useAppDispatch();
-  const subjects = useAppSelector(
-    (state: RootState) => state.subjectsSlice.subjects
-  );
-
+const ModalBody = () => {
   const {
     register,
     handleSubmit,
@@ -35,21 +14,15 @@ const TeacherRegister = () => {
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-
-  const subjectSelectionHandler = (e: string) => {
-    dispatch(setSubjects(e));
-    setSelectedSubject(e);
-  };
-
-  const subjectRemoveHandler = (sub: string) => {
-    dispatch(removeSubject(sub));
-  };
   return (
-    <div className="flex justify-center items-center my-20 ">
-      <div className="w-4/5 md:w-3/5 mx-auto p-10 bg-slate-950 text-white rounded-lg">
-        <h1 className="text-4xl font-bold text-center brand-text-color capitalize pb-8">
-          Sign Up as a Teacher
-        </h1>
+    <dialog id="UPDATE" className="modal w-full ">
+      <div className="modal-box w-full max-w-5xl  mx-auto bg-slate-900 shadow-2xl md:rounded-none">
+        <form method="dialog">
+          <button className=" bg-[#00ccb1] text-white text-xl font-bold btn-circle absolute right-2 top-2">
+            ✕
+          </button>
+        </form>
+        <h3 className="font-bold text-2xl mb-10">Update Info</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* name email row */}
           <div className="grid md:grid-cols-2 gap-5 mb-5">
@@ -171,40 +144,12 @@ const TeacherRegister = () => {
               >
                 Subjects
               </label>
-              <div className="grid grid-cols-2 items-center gap-2">
-                <div className="overflow-x-scroll flex gap-2 items-center">
-                  {subjects.map((subject) => (
-                    <div
-                      key={subject}
-                      className="bg-blue-400 px-2 py-1 rounded-md flex items-center relative"
-                    >
-                      {subject}
-                      <div
-                        onClick={() => subjectRemoveHandler(subject)}
-                        className=" bg-white size-3 flex justify-center cursor-pointer items-center rounded-full text-black absolute top-0 right-0 text-xs"
-                      >
-                        x
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <select
-                  value={selectedSubjects}
-                  onChange={(e) => subjectSelectionHandler(e.target.value)}
-                  className="select select-bordered w-full max-w-xs bg-white text-stone-950"
-                >
-                  <option value="" disabled selected>
-                    Select Subjects
-                  </option>
-                  <option value="Bangla">Bangla</option>
-                  <option value="English">English</option>
-                  <option value="Math">Math</option>
-                  <option value="Science">Science</option>
-                  <option value="Physics">Physics</option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Biology">Biology</option>
-                </select>
-              </div>
+              <input
+                {...register("subjects", { required: true })}
+                type="text"
+                placeholder="Ex. bangla english math physics"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
               <p className="text-gray-600 text-xs italic mt-2">
                 Please enter subjects as like example.
               </p>
@@ -216,10 +161,7 @@ const TeacherRegister = () => {
               >
                 Class range
               </label>
-              <select
-                defaultValue="1-12"
-                className="w-full text-center text-black py-2 rounded-md"
-              >
+              <select className="w-full text-center text-black py-2 rounded-md">
                 <option value="1-12">class 1-12</option>
                 <option value="1-10">class 1-10</option>
                 <option value="1-8">class 1-8</option>
@@ -273,7 +215,7 @@ const TeacherRegister = () => {
                 Confirm Password
               </label>
               <input
-                {...register("conPass", { required: true })}
+                {...register("ConPass", { required: true })}
                 type="text"
                 placeholder="Ex. confirm your password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -293,8 +235,11 @@ const TeacherRegister = () => {
           </div>
         </form>
       </div>
-    </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   );
 };
 
-export default TeacherRegister;
+export default ModalBody;

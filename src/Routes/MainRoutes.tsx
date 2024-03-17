@@ -7,6 +7,8 @@ import TeacherRegister from "../pages/Register/TeacherRegister";
 import StudentRegister from "../pages/Register/StudentRegister";
 import Login from "../pages/Login/Login";
 import PrivateRoute from "../layouts/PrivateRoute";
+import Teachers from "../pages/Teachers/Teachers";
+import TeacherProfile from "../pages/Teachers/TeacherProfile";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +18,18 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "/teachers",
+        element: <Teachers></Teachers>,
+      },
+      {
+        path: "/teacher/:id",
+        element: (
+          <PrivateRoute>
+            <TeacherProfile></TeacherProfile>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/:id",
