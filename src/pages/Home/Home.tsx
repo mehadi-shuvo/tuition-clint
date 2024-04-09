@@ -1,94 +1,81 @@
 import QNAAccordion from "../../components/Accordion/QNAAccordion";
 import { PrimaryCard } from "../../components/Cards/PrimaryCard";
 import "../../App.css";
-import Banner from "./Banner";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useGetAllTeachersQuery } from "../../redux/features/teacher/teacherApi";
+import { TTeacher } from "./types";
+import PostSection from "./PostSection";
+import { watchLoader } from "../../utils/loader";
+import bannerImg from "../../assets/images/undraw_educator_re_ju47.svg";
 
-const card = {
-  image: "https://i.ibb.co/QC3KmVK/aboutMe.jpg",
-  name: "John Doe",
-  description: "This is a description of the card.",
-  id: "1",
-};
-
-{
-  /* <a href="https://ibb.co/NmdyYqy"><img src="https://i.ibb.co/QC3KmVK/aboutMe.jpg" alt="aboutMe" border="0"></a><br /><a target='_blank' href='https://emoticoncentral.com/category/smiling-face-with-halo'>smiling face with halo smileys</a><br /> */
-}
 AOS.init();
 
 const Home = () => {
+  const { data, isLoading } = useGetAllTeachersQuery("");
+  console.log(isLoading);
+  if (isLoading) {
+    return (
+      <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
+        {watchLoader}
+      </div>
+    );
+  }
+
   return (
     <div>
-      <Banner></Banner>
+      {/* <Banner></Banner> */}
+      <div className="py-20 grid lg:grid-cols-2 gap-10">
+        <div className="px-10">
+          <img className="" src={bannerImg} alt="" />
+        </div>
+        <div className="px-10">
+          <h1 className="text-4xl md:text-7xl secondary-font">
+            Your slogan will here
+          </h1>
+          <p className="mt-4 text-slate-400 text-xs md:text-base font-light">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+            Temporibus, voluptas. Lorem ipsum dolor, sit amet consectetur
+            adipisicing elit. Vitae, labore?
+          </p>
+
+          <a
+            className="mt-10 inline-block bg-[#00ccb1] rounded-md text-xl font-extrabold py-4 px-10"
+            href="#FAQ"
+          >
+            Lear more
+          </a>
+        </div>
+      </div>
       {/*======== teachers section ==========*/}
       <div className="py-20">
         <div>
-          <h1 className="uppercase text-center text-5xl pb-10 font-bold">
-            <span>O</span>
-            <span>U</span>
-            <span>r</span>
-            <span> </span>
-            <span
-              data-aos="zoom-in-left"
-              data-aos-delay="50"
-              data-aos-duration="500"
-            >
-              <span>T</span>
-              <span>E</span>
-              <span>a</span>
-              <span>c</span>
-              <span>h</span>
-              <span>e</span>
-              <span>r</span>
-              <span>s</span>
-            </span>
+          <h1 className="mb-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00ccb1] to-pink-500 text-4xl font-extrabold tracking-widest secondary-font">
+            OUR TEACHERS
           </h1>
+          <div className="border-b-4 border-slate-950 mb-10"> </div>
         </div>
         <div className="w-4/5 mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
-          <PrimaryCard
-            image={card.image}
-            name={card.name}
-            description={card.description}
-            id={card.id}
-          ></PrimaryCard>
+          {data.data.map((teacher: TTeacher) => (
+            <PrimaryCard
+              key={teacher._id}
+              id={teacher._id}
+              image={teacher.photo}
+              description={teacher.description}
+              name={teacher.name}
+              subjects={teacher.subjects}
+            ></PrimaryCard>
+          ))}
         </div>
       </div>
+
+      {/* tuitions sections=================== */}
+      <PostSection></PostSection>
       {/* ========= QNA section */}
-      <div className="py-20 w-4/5 mx-auto grid md:grid-cols-2 gap-5">
+      <div id="FAQ" className="py-20 w-4/5 mx-auto grid md:grid-cols-2 gap-5">
         <div className="flex justify-center items-center bg-slate-950 rounded-xl py-5">
           <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-[#00ccb1] to-violet-500 text-7xl font-extrabold tracking-widest secondary-font">
-            QnA
+            FAQ
           </h1>
         </div>
         <QNAAccordion></QNAAccordion>

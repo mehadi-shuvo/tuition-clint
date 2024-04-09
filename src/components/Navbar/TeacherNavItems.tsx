@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const TeacherNavItems = ({ _id, email }: { _id: string; email: string }) => {
+const TeacherNavItems = ({ id, email }: { id: string; email: string }) => {
   return (
     <ul className="flex items-center gap-5">
       <li className=" ">
@@ -33,7 +33,7 @@ const TeacherNavItems = ({ _id, email }: { _id: string; email: string }) => {
       </li>
       <li>
         <NavLink
-          to={`/teacher/${_id}`}
+          to={`/teacher/${id}`}
           className={({ isActive, isPending }) =>
             isActive
               ? "text-[#00ccb1] text-lg font-medium"

@@ -1,14 +1,12 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
 import { LampContainer } from "../ui/lamp";
-import MagicButton from "../Buttonts/MagicButton";
 import "../../App.css";
 
 export function LampDemo() {
   return (
     <div className="bg-slate-950">
-      <LampContainer className="">
+      <LampContainer className="pt-28 lg:pt-0">
         <motion.h1
           initial={{ opacity: 0.5, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}

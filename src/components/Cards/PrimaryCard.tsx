@@ -12,14 +12,25 @@ interface TPrimaryCard {
   name: string;
   description: string;
   id: string;
+  subjects: string[];
 }
 export const PrimaryCard: React.FC<TPrimaryCard> = ({
   name,
   image,
   description,
   id,
+  subjects,
 }) => {
   AOS.init(); // Initialize AOS directly
+
+  const showSubjects = [];
+  for (let i = 0; i < subjects.length; i++) {
+    if (i == subjects.length - 1) {
+      showSubjects.push(subjects[i]);
+    } else {
+      showSubjects.push(subjects[i] + " | ");
+    }
+  }
 
   return (
     <div data-aos="zoom-in" data-aos-delay="50" data-aos-duration="1000">
@@ -32,14 +43,12 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
         <p className="text-xl md:text-3xl font-bold capitalize text-center mt-4 mb-2 text-neutral-200">
           {name}
         </p>
-        <p className="text-lg md:text-xl font-semibold text-center py-3 brand-text-color">
-          English | Bangla | Math | Physics | Chemistry
+        <p className="text-lg md:text-base font-semibold text-center py-1 brand-text-color">
+          {showSubjects}
         </p>
 
         <p className="text-sm text-center text-neutral-600 dark:text-neutral-400 hidden md:block">
-          {description} Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Alias culpa ipsum tempora in dolorum officiis, consectetur omnis ab
-          quo iste.
+          {description}
         </p>
         <div className="flex justify-center items-center">
           <Link

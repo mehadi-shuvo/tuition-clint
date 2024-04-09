@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { useGetAllTeachersQuery } from "../../redux/features/teacher/teacherApi";
-import { TLocation, TParamsQuery } from "../Home/types";
+import { useState } from "react";
+import { useGetAllPostsQuery } from "../../redux/features/post/postApi";
 import { SubmitHandler, useForm } from "react-hook-form";
+import PostCard from "../../components/Cards/PostCard";
+import { TLocation, TParamsQuery, TPost } from "../Home/types";
 import { watchLoader } from "../../utils/loader";
 
-const Teachers = () => {
+const Tuitions = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
   const [option, setOption] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const { data: teachersData, isLoading } = useGetAllTeachersQuery(params);
+  const { data: postData, isLoading } = useGetAllPostsQuery(params);
 
   const { register, handleSubmit } = useForm<TLocation>();
   const onSubmit: SubmitHandler<TLocation> = (data) => {
@@ -19,7 +20,7 @@ const Teachers = () => {
   };
 
   const handleNextPage = () => {
-    const page = teachersData.data.length === 2 ? pageNumber + 1 : pageNumber;
+    const page = postData.data.length === 2 ? pageNumber + 1 : pageNumber;
     setPageNumber(page);
     if (option) {
       setParams([
@@ -52,10 +53,9 @@ const Teachers = () => {
       </div>
     );
   }
-  console.log(teachersData);
-
+  // console.log(postData);
   return (
-    <div className="pt-20 mx-auto w-4/5">
+    <div className="pt-20">
       <form
         onChange={handleSubmit(onSubmit)}
         className="w-full flex justify-center items-center mb-7"
@@ -71,7 +71,12 @@ const Teachers = () => {
           <option value={"dhaka"}>Dhaka</option>
         </select>
       </form>
-      <div className="py-10"></div>
+      <div className="py-10 w-4/5 mx-auto grid gap-4 md:grid-cols-2">
+        {postData.data.map((itm: TPost) => (
+          <PostCard key={itm._id} post={itm}></PostCard>
+        ))}
+      </div>
+      {/* pagination buttons */}
       <div className="w-[280px] mx-auto">
         <div className="join grid grid-cols-2">
           <button
@@ -92,4 +97,4 @@ const Teachers = () => {
   );
 };
 
-export default Teachers;
+export default Tuitions;

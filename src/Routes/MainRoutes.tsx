@@ -9,6 +9,8 @@ import Login from "../pages/Login/Login";
 import PrivateRoute from "../layouts/PrivateRoute";
 import Teachers from "../pages/Teachers/Teachers";
 import TeacherProfile from "../pages/Teachers/TeacherProfile";
+import StudentProfile from "../pages/Student/StudentProfile";
+import Tuitions from "../pages/Tuitions/Tuitions";
 
 export const router = createBrowserRouter([
   {
@@ -32,12 +34,20 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/student/:id",
+        element: <StudentProfile></StudentProfile>,
+      },
+      {
         path: "/:id",
         element: (
           <PrivateRoute>
             <TeacherAbout />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/tuitions",
+        element: <Tuitions />,
       },
     ],
   },

@@ -13,6 +13,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import subjectsSlice from "./features/register/subjectsSlice";
+import { imageApi } from "./api/imageApi";
 
 const persistConfig = {
   key: "auth",
@@ -24,6 +25,7 @@ const persistedAuthReducer = persistReducer(persistConfig, userInfo);
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
+    [imageApi.reducerPath]: imageApi.reducer,
     authSlice: persistedAuthReducer,
     subjectsSlice: subjectsSlice,
   },
@@ -32,7 +34,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware),
+    }).concat(baseApi.middleware, imageApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

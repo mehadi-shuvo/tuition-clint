@@ -4,14 +4,7 @@ import { useAuthCurrentUser } from "../../redux/features/auth/authSlice";
 import GuestNavItems from "./GuestNavItems";
 import StudentNavItems from "./StudentNavItems";
 import TeacherNavItems from "./TeacherNavItems";
-
-type TUser = {
-  _id: string;
-  role: string;
-  email: string;
-  iat: number;
-  exp: number;
-};
+import { TUser } from "../../pages/Home/types";
 
 const Navbar = () => {
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
@@ -21,9 +14,9 @@ const Navbar = () => {
     navItems = <GuestNavItems />;
   } else {
     if ((user?.role as string) === "student") {
-      navItems = <StudentNavItems />;
+      navItems = <StudentNavItems id={user._id} email={user.email} />;
     } else {
-      navItems = <TeacherNavItems _id={user._id} email={user.email} />;
+      navItems = <TeacherNavItems id={user._id} email={user.email} />;
     }
   }
 

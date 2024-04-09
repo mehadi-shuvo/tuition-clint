@@ -6,35 +6,96 @@ import {
   setSubjects,
 } from "../../redux/features/register/subjectsSlice";
 import { RootState } from "../../redux/store";
-import React, { useState } from "react";
+import { useState } from "react";
+import { imageHosting } from "../../utils/imageHosting";
+import { useCreateTeacherMutation } from "../../redux/features/teacher/teacherApi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { tokenDecoder } from "../../utils/tokenDecoder";
+import { setUser } from "../../redux/features/auth/authSlice";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
 
 interface IFormInput {
   name: string;
+  university: string;
   email: string;
   phone: string;
   whatsApp: string;
   photo: string;
-  subjects: string;
+  subjects: string[];
   studentID: string;
   description: string;
   password: string;
   conPass: string;
+  classRange: string;
 }
 
 const TeacherRegister = () => {
+  const [login] = useLoginMutation();
+  const [createTeacher] = useCreateTeacherMutation();
   const [selectedSubjects, setSelectedSubject] = useState("");
   const dispatch = useAppDispatch();
   const subjects = useAppSelector(
     (state: RootState) => state.subjectsSlice.subjects
   );
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  // console.log(teacherData);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
+
+  // console.log(imageData);
+
+  const { register, handleSubmit } = useForm<IFormInput>();
+
+  //submit handler
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    // account owner image process
+    const image = data.photo[0];
+    const imageData = new FormData();
+    imageData.append("image", image);
+    const imgInfo = await imageHosting(imageData);
+
+    // account owner's student id card image process
+    const idCard = data.studentID[0];
+    const idCardData = new FormData();
+    idCardData.append("image", idCard);
+    const idCardInfo = await imageHosting(idCardData);
+
+    // call createTeacher Api
+    const {
+      name,
+      university,
+      description,
+      whatsApp,
+      email,
+      password,
+      classRange,
+    } = data;
+    await createTeacher({
+      name,
+      university,
+      whatsApp,
+      email,
+      classRange,
+      description,
+      password,
+      photo: imgInfo.data.url,
+      studentIDPhoto: idCardInfo.data.url,
+      subjects: subjects,
+    }).unwrap();
+
+    // make userInfo for login
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+    // login, set data and redirect
+    const res = await login(userInfo).unwrap();
+    const user = tokenDecoder(res.data.token);
+    dispatch(setUser({ user: user, token: res.data.token }));
+    navigate(from);
+  };
 
   const subjectSelectionHandler = (e: string) => {
     dispatch(setSubjects(e));
@@ -48,10 +109,10 @@ const TeacherRegister = () => {
     <div className="flex justify-center items-center my-20 ">
       <div className="w-4/5 md:w-3/5 mx-auto p-10 bg-slate-950 text-white rounded-lg">
         <h1 className="text-4xl font-bold text-center brand-text-color capitalize pb-8">
-          Sign Up as a Teacher
+          Register as Teacher
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* name email row */}
+          {/* name university row */}
           <div className="grid md:grid-cols-2 gap-5 mb-5">
             <div className="w-full">
               <label
@@ -61,7 +122,7 @@ const TeacherRegister = () => {
                 Name
               </label>
               <input
-                {...register("name", { required: true })}
+                {...register("name")}
                 type="text"
                 placeholder="Ex. Mehadi Hasan"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -78,8 +139,8 @@ const TeacherRegister = () => {
                 University Name
               </label>
               <input
-                {...register("email", { required: true })}
-                type="email"
+                {...register("university")}
+                type="text"
                 placeholder="Ex. Dhaka University"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -98,7 +159,7 @@ const TeacherRegister = () => {
                 WhatsApp Number
               </label>
               <input
-                {...register("whatsApp", { required: true })}
+                {...register("whatsApp")}
                 type="text"
                 placeholder="Ex. 01700000000"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -115,7 +176,7 @@ const TeacherRegister = () => {
                 E-mail
               </label>
               <input
-                {...register("email", { required: true })}
+                {...register("email")}
                 type="text"
                 placeholder="Ex. example@gmail.com"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -135,10 +196,9 @@ const TeacherRegister = () => {
                 Photo
               </label>
               <input
-                {...register("photo", { required: true })}
-                type="text"
-                placeholder="Ex. 01700000000"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                {...register("photo")}
+                type="file"
+                className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
               />
               <p className="text-gray-600 text-xs italic mt-2">
                 Please add your photo.
@@ -152,10 +212,10 @@ const TeacherRegister = () => {
                 Student ID
               </label>
               <input
-                {...register("studentID", { required: true })}
-                type="text"
+                {...register("studentID")}
+                type="file"
                 placeholder="Ex. example@gmail.com"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
               />
               <p className="text-gray-600 text-xs italic mt-2">
                 Please add your student ID picture.
@@ -172,26 +232,10 @@ const TeacherRegister = () => {
                 Subjects
               </label>
               <div className="grid grid-cols-2 items-center gap-2">
-                <div className="overflow-x-scroll flex gap-2 items-center">
-                  {subjects.map((subject) => (
-                    <div
-                      key={subject}
-                      className="bg-blue-400 px-2 py-1 rounded-md flex items-center relative"
-                    >
-                      {subject}
-                      <div
-                        onClick={() => subjectRemoveHandler(subject)}
-                        className=" bg-white size-3 flex justify-center cursor-pointer items-center rounded-full text-black absolute top-0 right-0 text-xs"
-                      >
-                        x
-                      </div>
-                    </div>
-                  ))}
-                </div>
                 <select
                   value={selectedSubjects}
                   onChange={(e) => subjectSelectionHandler(e.target.value)}
-                  className="select select-bordered w-full max-w-xs bg-white text-stone-950"
+                  className="select select-bordered w-full bg-white text-stone-950"
                 >
                   <option value="" disabled selected>
                     Select Subjects
@@ -204,6 +248,26 @@ const TeacherRegister = () => {
                   <option value="Chemistry">Chemistry</option>
                   <option value="Biology">Biology</option>
                 </select>
+                <div
+                  className={`overflow-x-scroll flex gap-2 items-center ${
+                    subjects.length > 0 && "bg-white rounded-md py-[6px] px-1"
+                  }`}
+                >
+                  {subjects.map((subject) => (
+                    <div
+                      key={subject}
+                      className="bg-blue-400 px-2 py-1 rounded-md flex items-center relative"
+                    >
+                      {subject}
+                      <div
+                        onClick={() => subjectRemoveHandler(subject)}
+                        className=" bg-slate-950 size-3 flex justify-center cursor-pointer items-center rounded-full text-white absolute top-0 right-0 text-xs"
+                      >
+                        <span className="mb-[1px]">x</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               <p className="text-gray-600 text-xs italic mt-2">
                 Please enter subjects as like example.
@@ -217,13 +281,13 @@ const TeacherRegister = () => {
                 Class range
               </label>
               <select
-                defaultValue="1-12"
-                className="w-full text-center text-black py-2 rounded-md"
+                {...register("classRange")}
+                className="text-center select select-bordered w-full bg-white text-stone-950"
               >
-                <option value="1-12">class 1-12</option>
-                <option value="1-10">class 1-10</option>
-                <option value="1-8">class 1-8</option>
-                <option value="1-6">class 1-6</option>
+                <option value="1-12">Class 1 to 12</option>
+                <option value="1-10">Class 1 to 10</option>
+                <option value="1-8">Class 1 to 8</option>
+                <option value="1-6">Class 1 to 6</option>
               </select>
               <p className="text-gray-600 text-xs italic mt-2">
                 Please select which classes you are in comfortable.
@@ -240,7 +304,7 @@ const TeacherRegister = () => {
                 About your-self
               </label>
               <textarea
-                {...register("description", { required: true })}
+                {...register("description")}
                 placeholder="Ex. Describe your-self properly"
                 className="h-[100px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -256,7 +320,7 @@ const TeacherRegister = () => {
                 Password
               </label>
               <input
-                {...register("password", { required: true })}
+                {...register("password")}
                 type="text"
                 placeholder="Ex. make a strong password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -273,7 +337,7 @@ const TeacherRegister = () => {
                 Confirm Password
               </label>
               <input
-                {...register("conPass", { required: true })}
+                {...register("conPass")}
                 type="text"
                 placeholder="Ex. confirm your password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
