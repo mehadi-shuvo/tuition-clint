@@ -1,11 +1,9 @@
 import { whatsAppSVG } from "../../assets/svgs/localSVGs";
 
-const ContactButton = () => {
+const ContactButton = ({ phone }: { phone: string }) => {
   const redirectToWhatsApp = () => {
-    // Replace the phone number with the desired phone number
-    const phoneNumber = "01723263304";
     // Create the WhatsApp URL with the phone number
-    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    const whatsappUrl = `https://wa.me/${phone}`;
     // Redirect to the WhatsApp URL
     window.location.href = whatsappUrl;
   };

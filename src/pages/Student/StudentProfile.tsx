@@ -27,7 +27,7 @@ const StudentProfile = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
 
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
-  const { isLoading, data: student } = useGetOneStudentByIdQuery(user.email);
+  const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
   const { data: thanas, isLoading: thanasIsLoading } =
     useGetThanasQuery(params);
 
@@ -132,7 +132,7 @@ const StudentProfile = () => {
                     Select District
                   </option>
                   {allDistrictsArray.sort().map((dis) => (
-                    <option key={dis} value={dis}>
+                    <option key={dis} value={dis.toLowerCase()}>
                       {dis}
                     </option>
                   ))}
@@ -145,7 +145,9 @@ const StudentProfile = () => {
                     {thanasIsLoading ? "Loading..." : "Select Thana"}
                   </option>
                   {thanas?.data?.thanas.map((tha: string) => (
-                    <option key={tha}>{tha}</option>
+                    <option key={tha} value={tha.toLowerCase()}>
+                      {tha}
+                    </option>
                   ))}
                 </select>
               </div>

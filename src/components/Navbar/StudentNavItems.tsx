@@ -1,6 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { logOut } from "../../redux/features/auth/authSlice";
 
-const StudentNavItems = ({ id, email }: { id: string; email: string }) => {
+const StudentNavItems = ({ id }: { id: string }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const items = [
     {
       link: "/",
@@ -11,13 +15,18 @@ const StudentNavItems = ({ id, email }: { id: string; email: string }) => {
       name: "Teachers",
     },
     {
+      link: "/tuitions",
+      name: "tuitions",
+    },
+    {
       link: `/student/${id}`,
       name: "profile",
     },
   ];
 
   const logoutHandler = () => {
-    console.log("1");
+    dispatch(logOut());
+    navigate("/");
   };
   return (
     <div className="">

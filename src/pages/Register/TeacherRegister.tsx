@@ -9,10 +9,10 @@ import { RootState } from "../../redux/store";
 import { useState } from "react";
 import { imageHosting } from "../../utils/imageHosting";
 import { useCreateTeacherMutation } from "../../redux/features/teacher/teacherApi";
-import { useLocation, useNavigate } from "react-router-dom";
-import { tokenDecoder } from "../../utils/tokenDecoder";
-import { setUser } from "../../redux/features/auth/authSlice";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { allDistrictsArray } from "../../assets/district";
+import { TImageApiResponse } from "../Home/types";
 
 interface IFormInput {
   name: string;
@@ -21,6 +21,7 @@ interface IFormInput {
   phone: string;
   whatsApp: string;
   photo: string;
+  district: string;
   subjects: string[];
   studentID: string;
   description: string;
@@ -30,37 +31,54 @@ interface IFormInput {
 }
 
 const TeacherRegister = () => {
-  const [login] = useLoginMutation();
   const [createTeacher] = useCreateTeacherMutation();
   const [selectedSubjects, setSelectedSubject] = useState("");
+  const [pass, setpass] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(false);
   const dispatch = useAppDispatch();
   const subjects = useAppSelector(
     (state: RootState) => state.subjectsSlice.subjects
   );
 
+  console.log(pass);
+
+  const handleCheckPss = (value: string) => {
+    if (value === pass) {
+      setConfirmPassword(true);
+    }
+  };
+
   // console.log(teacherData);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
 
-  // console.log(imageData);
-
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
   //submit handler
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    console.log(errors.name);
     // account owner image process
     const image = data.photo[0];
     const imageData = new FormData();
     imageData.append("image", image);
-    const imgInfo = await imageHosting(imageData);
+    const imgInfo: TImageApiResponse | undefined = await imageHosting(
+      imageData
+    );
 
     // account owner's student id card image process
+    // let idCardInfo: { studentIDPhoto: string } | undefined;
     const idCard = data.studentID[0];
     const idCardData = new FormData();
     idCardData.append("image", idCard);
-    const idCardInfo = await imageHosting(idCardData);
+    const idCardInfo: TImageApiResponse | undefined = await imageHosting(
+      idCardData
+    );
+
+    //     >z>z
 
     // call createTeacher Api
     const {
@@ -69,6 +87,8 @@ const TeacherRegister = () => {
       description,
       whatsApp,
       email,
+      district,
+
       password,
       classRange,
     } = data;
@@ -76,25 +96,23 @@ const TeacherRegister = () => {
       name,
       university,
       whatsApp,
+      district,
       email,
       classRange,
       description,
       password,
-      photo: imgInfo.data.url,
-      studentIDPhoto: idCardInfo.data.url,
+      photo: imgInfo!.data.display_url,
+      studentIDPhoto: idCardInfo!.data.display_url,
       subjects: subjects,
     }).unwrap();
 
     // make userInfo for login
-    const userInfo = {
-      email: data.email,
-      password: data.password,
-    };
-    // login, set data and redirect
-    const res = await login(userInfo).unwrap();
-    const user = tokenDecoder(res.data.token);
-    dispatch(setUser({ user: user, token: res.data.token }));
-    navigate(from);
+
+    navigate("/auth/login");
+    toast.success(
+      "Successfully registered. Please check your email. If you not find please check spam folder",
+      { duration: 6000 }
+    );
   };
 
   const subjectSelectionHandler = (e: string) => {
@@ -105,10 +123,11 @@ const TeacherRegister = () => {
   const subjectRemoveHandler = (sub: string) => {
     dispatch(removeSubject(sub));
   };
+
   return (
     <div className="flex justify-center items-center my-20 ">
-      <div className="w-4/5 md:w-3/5 mx-auto p-10 bg-slate-950 text-white rounded-lg">
-        <h1 className="text-4xl font-bold text-center brand-text-color capitalize pb-8">
+      <div className="w-11/12 md:w-3/5 mx-auto p-5 lg:p-10 bg-slate-950 text-white rounded-lg">
+        <h1 className="text-2xl lg:text-4xl font-bold text-center brand-text-color capitalize pb-8">
           Register as Teacher
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,13 +141,17 @@ const TeacherRegister = () => {
                 Name
               </label>
               <input
-                {...register("name")}
+                {...register("name", { required: true })}
                 type="text"
                 placeholder="Ex. Mehadi Hasan"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your name.
+                {errors.name ? (
+                  <span className="text-red-600">Name is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -139,13 +162,19 @@ const TeacherRegister = () => {
                 University Name
               </label>
               <input
-                {...register("university")}
+                {...register("university", { required: true })}
                 type="text"
                 placeholder="Ex. Dhaka University"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your university name.
+                {errors.university ? (
+                  <span className="text-red-600">
+                    University or Collage name is required
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -159,13 +188,19 @@ const TeacherRegister = () => {
                 WhatsApp Number
               </label>
               <input
-                {...register("whatsApp")}
+                {...register("whatsApp", { required: true })}
                 type="text"
                 placeholder="Ex. 01700000000"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                It is important student will contact by this.
+                {errors.whatsApp ? (
+                  <span className="text-red-600">
+                    WhatsApp number is required for contact
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -176,13 +211,19 @@ const TeacherRegister = () => {
                 E-mail
               </label>
               <input
-                {...register("email")}
-                type="text"
+                {...register("email", { required: true })}
+                type="email"
                 placeholder="Ex. example@gmail.com"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your email.
+                {errors.email ? (
+                  <span className="text-red-600">
+                    Email is required for contact
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -196,12 +237,16 @@ const TeacherRegister = () => {
                 Photo
               </label>
               <input
-                {...register("photo")}
+                {...register("photo", { required: true })}
                 type="file"
                 className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please add your photo.
+                {errors.photo ? (
+                  <span className="text-red-600">Your picture is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -212,13 +257,19 @@ const TeacherRegister = () => {
                 Student ID
               </label>
               <input
-                {...register("studentID")}
+                {...register("studentID", { required: true })}
                 type="file"
                 placeholder="Ex. example@gmail.com"
                 className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please add your student ID picture.
+                {errors.studentID ? (
+                  <span className="text-red-600">
+                    Your student ID card's picture is required
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -270,7 +321,13 @@ const TeacherRegister = () => {
                 </div>
               </div>
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter subjects as like example.
+                {subjects.length === 0 ? (
+                  <span className="text-red-600">
+                    You should must select minimum one subject
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -281,7 +338,7 @@ const TeacherRegister = () => {
                 Class range
               </label>
               <select
-                {...register("classRange")}
+                {...register("classRange", { required: true })}
                 className="text-center select select-bordered w-full bg-white text-stone-950"
               >
                 <option value="1-12">Class 1 to 12</option>
@@ -290,7 +347,46 @@ const TeacherRegister = () => {
                 <option value="1-6">Class 1 to 6</option>
               </select>
               <p className="text-gray-600 text-xs italic mt-2">
-                Please select which classes you are in comfortable.
+                {errors.classRange ? (
+                  <span className="text-red-600">
+                    Select your class range it's required
+                  </span>
+                ) : (
+                  ""
+                )}
+              </p>
+            </div>
+          </div>
+          {/* location */}
+          <div className="grid  mb-5">
+            <div className="w-full">
+              <label
+                htmlFor="input"
+                className="block text-white text-sm font-bold mb-2"
+              >
+                Location
+              </label>
+              <select
+                {...register("district", { required: true })}
+                className="rounded-md py-2 px-3 text-black bg-white w-full"
+              >
+                <option disabled selected>
+                  Select District
+                </option>
+                {allDistrictsArray.sort().map((dis) => (
+                  <option key={dis} value={dis.toLowerCase()}>
+                    {dis}
+                  </option>
+                ))}
+              </select>
+              <p className="text-gray-600 text-xs italic mt-2">
+                {errors.district ? (
+                  <span className="text-red-600">
+                    Your location is required
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -304,7 +400,7 @@ const TeacherRegister = () => {
                 About your-self
               </label>
               <textarea
-                {...register("description")}
+                {...register("description", { required: true })}
                 placeholder="Ex. Describe your-self properly"
                 className="h-[100px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
@@ -320,13 +416,18 @@ const TeacherRegister = () => {
                 Password
               </label>
               <input
-                {...register("password")}
-                type="text"
+                {...register("password", { required: true })}
+                onBlur={(e) => setpass(e.target.value)}
+                type="password"
                 placeholder="Ex. make a strong password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your password.
+                {errors.password ? (
+                  <span className="text-red-600">password is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -337,22 +438,21 @@ const TeacherRegister = () => {
                 Confirm Password
               </label>
               <input
-                {...register("conPass")}
-                type="text"
+                {...register("conPass", { required: true })}
+                onChange={(e) => handleCheckPss(e.target.value)}
+                type="password"
                 placeholder="Ex. confirm your password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              <p className="text-gray-600 text-xs italic mt-2">
-                Please re-enter your password.
-              </p>
             </div>
           </div>
           <div className="flex justify-center items-center pt-5">
             <button
-              className="bg-[#00ccb1] px-10 py-3 rounded-md text-xl font-bold uppercase"
+              disabled={!confirmPassword}
+              className={`bg-[#00ccb1] px-10 py-3 rounded-md text-xl font-bold uppercase disabled:bg-slate-600`}
               type="submit"
             >
-              Sign Up
+              Register
             </button>
           </div>
         </form>

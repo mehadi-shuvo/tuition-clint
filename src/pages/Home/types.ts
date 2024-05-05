@@ -29,7 +29,8 @@ export type TParamsQuery = {
 };
 
 export type TLocation = {
-  location: string;
+  district: string;
+  thana: string;
 };
 
 export type TUser = {
@@ -38,4 +39,34 @@ export type TUser = {
   email: string;
   iat: number;
   exp: number;
+};
+
+type ImageDetails = {
+  filename: string;
+  name: string;
+  mime: string; // MIME type of the image
+  extension: string;
+  url: string;
+};
+
+type ImageData = {
+  id: string;
+  title: string;
+  url_viewer: string;
+  url: string;
+  display_url: string;
+  width: number;
+  height: number;
+  size: number;
+  time: number; // Timestamp, might need to be handled as a Date depending on usage
+  expiration: number;
+  image: ImageDetails;
+  thumb: ImageDetails;
+  delete_url: string;
+};
+
+export type TImageApiResponse = {
+  data: ImageData;
+  success: boolean;
+  status: number;
 };

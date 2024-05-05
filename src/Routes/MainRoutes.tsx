@@ -11,6 +11,7 @@ import Teachers from "../pages/Teachers/Teachers";
 import TeacherProfile from "../pages/Teachers/TeacherProfile";
 import StudentProfile from "../pages/Student/StudentProfile";
 import Tuitions from "../pages/Tuitions/Tuitions";
+import EmailVerification from "../pages/Verification/EmailVerification";
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +24,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/teachers",
-        element: <Teachers></Teachers>,
+        element: (
+          <PrivateRoute>
+            <Teachers />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/teacher/:id",
@@ -47,7 +52,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/tuitions",
-        element: <Tuitions />,
+        element: (
+          <PrivateRoute>
+            <Tuitions />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -66,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login></Login>,
+      },
+      {
+        path: `:id/verify/:token`,
+        element: <EmailVerification />,
       },
     ],
   },

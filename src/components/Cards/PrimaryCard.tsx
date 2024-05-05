@@ -48,7 +48,7 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
         </p>
 
         <p className="text-sm text-center text-neutral-600 dark:text-neutral-400 hidden md:block">
-          {description}
+          {description.slice(0, 80)}...
         </p>
         <div className="flex justify-center items-center">
           <Link

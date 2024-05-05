@@ -3,21 +3,21 @@ import { bookSVG, locationSVG, whatsAppSVG } from "../../assets/svgs/localSVGs";
 import { useAppSelector } from "../../redux/hooks";
 import { useAuthCurrentUser } from "../../redux/features/auth/authSlice";
 import toast from "react-hot-toast";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const PostCard = ({ post }: { post: TPost }) => {
+  AOS.init();
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
   const handleWhatsApp = () => {
     if (user) {
-      if (user.role === "teacher") {
+      if (user.role === "student") {
         toast.error(
           "Request is not accepted. Only students can connect with teachers."
         );
-      } else if (user.role === "student") {
-        // Replace the phone number with the desired phone number
+      } else if (user.role === "teacher") {
         const phoneNumber = "01723263304";
-        // Create the WhatsApp URL with the phone number
         const whatsappUrl = `https://wa.me/${phoneNumber}`;
-        // Redirect to the WhatsApp URL
         window.location.href = whatsappUrl;
       }
     } else {
@@ -26,7 +26,12 @@ const PostCard = ({ post }: { post: TPost }) => {
   };
 
   return (
-    <div className="p-1 rounded-lg bg-white hover:bg-[#00ccb1] ease-linear duration-300 transition-all hover:shadow-lg hover:shadow-[#00ccb1]">
+    <div
+      data-aos="zoom-in"
+      data-aos-delay="50"
+      data-aos-duration="1000"
+      className="p-1 rounded-lg bg-white hover:bg-[#00ccb1] ease-linear duration-300 transition-all hover:shadow-lg hover:shadow-[#00ccb1]"
+    >
       <div className="p-5 rounded-lg bg-slate-950">
         <div className="grid md:grid-cols-2 gap-4 md:gap-0">
           <div className=" md:border-r-2 hover:border-r-[#00ccb1]">

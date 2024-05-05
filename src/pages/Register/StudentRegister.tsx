@@ -3,11 +3,9 @@ import "../../App.css";
 import { useState } from "react";
 import { imageHosting } from "../../utils/imageHosting";
 import { useCreateStudentMutation } from "../../redux/features/student/studentApi";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
-import { useLocation, useNavigate } from "react-router-dom";
-import { tokenDecoder } from "../../utils/tokenDecoder";
-import { useAppDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { TImageApiResponse } from "../Home/types";
 
 interface IFormInput {
   name: string;
@@ -21,50 +19,55 @@ interface IFormInput {
 
 const StudentRegister = () => {
   const [createStudent] = useCreateStudentMutation();
-  const [login] = useLoginMutation();
-  const dispatch = useAppDispatch();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pass, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
 
-  const { register, handleSubmit, reset } = useForm<IFormInput>();
+  const checkConfirmPassword = (value: string) => {
+    if (pass === value) {
+      setConfirmPassword(true);
+    }
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     // account owner image process
     const image = data.photo[0];
     const imageData = new FormData();
     imageData.append("image", image);
-    const imgInfo = await imageHosting(imageData);
+    const imgInfo: TImageApiResponse | undefined = await imageHosting(
+      imageData
+    );
 
     const studentInfo = {
       name: data.name,
       schoolOrCollage: data.schoolOrCollage,
       email: data.email,
       whatsApp: data.whatsApp,
-      photo: imgInfo.data.url,
+      photo: imgInfo!.data.url,
       password: data.password,
     };
     // creating user
     await createStudent(studentInfo).unwrap();
     // login user
-    const userInfoForLogin = {
-      email: data.email,
-      password: data.password,
-    };
-
-    const res = await login(userInfoForLogin).unwrap();
-    const user = tokenDecoder(res.data.token);
-    dispatch(setUser({ user: user, token: res.data.token }));
     reset();
-    navigate(from);
+    navigate("/auth/login");
+    toast.success(
+      "Successfully registered. Please check your email. If you not find please check spam folder",
+      { duration: 6000 }
+    );
   };
 
   return (
     <div className="flex justify-center items-center my-20 ">
-      <div className="w-4/5 md:w-3/5 mx-auto p-10 bg-slate-950 text-white rounded-lg">
-        <h1 className="text-4xl font-bold text-center brand-text-color capitalize pb-8">
+      <div className="w-11/12 md:w-3/5 mx-auto p-5 lg:p-10 bg-slate-950 text-white rounded-lg">
+        <h1 className="text-2xl lg:text-4xl font-bold text-center brand-text-color capitalize pb-8">
           Register as Student
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -84,7 +87,11 @@ const StudentRegister = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your name.
+                {errors.name ? (
+                  <span className="text-red-600">Name is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -92,16 +99,22 @@ const StudentRegister = () => {
                 htmlFor="input"
                 className="block text-white text-sm font-bold mb-2"
               >
-                School/Collage
+                School/College
               </label>
               <input
                 {...register("schoolOrCollage", { required: true })}
                 type="text"
-                placeholder="Ex. Dhaka Collage"
+                placeholder="Ex. Dhaka College"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter school or Collage name.
+                {errors.schoolOrCollage ? (
+                  <span className="text-red-600">
+                    School or College name is is required
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -121,7 +134,13 @@ const StudentRegister = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your whatsApp Number.
+                {errors.whatsApp ? (
+                  <span className="text-red-600">
+                    WhatsApp number is required
+                  </span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="w-full">
@@ -138,7 +157,11 @@ const StudentRegister = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please enter your email.
+                {errors.email ? (
+                  <span className="text-red-600">G-mail is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -152,12 +175,16 @@ const StudentRegister = () => {
                 Photo
               </label>
               <input
-                {...register("photo")}
+                {...register("photo", { required: true })}
                 type="file"
                 className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
               />
               <p className="text-gray-600 text-xs italic mt-2">
-                Please add your photo.
+                {errors.photo ? (
+                  <span className="text-red-600">Your picture is required</span>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
           </div>
@@ -191,32 +218,24 @@ const StudentRegister = () => {
               </label>
               <input
                 {...register("conPass", { required: true })}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => checkConfirmPassword(e.target.value)}
                 type="password"
                 placeholder="Ex. confirm your password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               <p className="text-gray-600 text-xs italic mt-2">
                 {confirmPassword ? (
-                  confirmPassword !== password ? (
-                    <span className="text-red-500">
-                      Password is not matched. Please try again!
-                    </span>
-                  ) : (
-                    <span className="text-green-500">Password matched!</span>
-                  )
+                  <span className="text-green-600">password matched</span>
                 ) : (
-                  <span>Re-enter your password</span>
+                  "re-enter your password"
                 )}
               </p>
             </div>
           </div>
           <div className="flex justify-center items-center pt-5">
             <button
-              disabled={
-                password !== confirmPassword || password === "" ? true : false
-              }
-              className={`bg-[#00ccb1] px-10 py-3 rounded-md text-xl font-bold uppercase btn`}
+              disabled={!confirmPassword}
+              className={`bg-[#00ccb1] px-10 py-3 rounded-md text-xl font-bold uppercase disabled:bg-slate-600`}
               type="submit"
             >
               Sign Up

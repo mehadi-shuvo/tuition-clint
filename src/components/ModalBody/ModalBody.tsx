@@ -1,18 +1,19 @@
-import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface IFormInput {
   name: string;
   email: string;
+  whatsApp: string;
+  photo: string;
+  studentID: string;
+  subjects: string[];
+  description: string;
+  password: string;
+  conPass: string;
 }
 
 const ModalBody = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IFormInput>();
+  const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
   return (
     <dialog id="UPDATE" className="modal w-full ">
@@ -215,7 +216,7 @@ const ModalBody = () => {
                 Confirm Password
               </label>
               <input
-                {...register("ConPass", { required: true })}
+                {...register("conPass", { required: true })}
                 type="text"
                 placeholder="Ex. confirm your password"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

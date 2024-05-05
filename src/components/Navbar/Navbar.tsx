@@ -14,9 +14,9 @@ const Navbar = () => {
     navItems = <GuestNavItems />;
   } else {
     if ((user?.role as string) === "student") {
-      navItems = <StudentNavItems id={user._id} email={user.email} />;
+      navItems = <StudentNavItems id={user._id} />;
     } else {
-      navItems = <TeacherNavItems id={user._id} email={user.email} />;
+      navItems = <TeacherNavItems id={user._id} />;
     }
   }
 

@@ -21,6 +21,9 @@ const teacherApi = baseApi.injectEndpoints({
     getOneTeacherBYId: builder.query({
       query: (id: string) => `/teacher/profile/${id}`,
     }),
+    getOneTeacher: builder.query({
+      query: (id: string) => `/teacher/${id}`,
+    }),
     createTeacher: builder.mutation({
       query: (teacherData) => ({
         url: "/teacher",
@@ -35,4 +38,5 @@ export const {
   useGetAllTeachersQuery,
   useGetOneTeacherBYIdQuery,
   useCreateTeacherMutation,
+  useGetOneTeacherQuery,
 } = teacherApi;

@@ -13,7 +13,6 @@ AOS.init();
 
 const Home = () => {
   const { data, isLoading } = useGetAllTeachersQuery("");
-  console.log(isLoading);
   if (isLoading) {
     return (
       <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
