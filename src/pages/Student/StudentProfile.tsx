@@ -24,10 +24,7 @@ import { allDistrictsArray } from "../../assets/district";
 import { useState } from "react";
 
 const StudentProfile = () => {
-  const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
-
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
-
   const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
   if (isLoading) {
     return (
@@ -36,6 +33,8 @@ const StudentProfile = () => {
       </div>
     );
   }
+  const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
+
   const { data: thanas, isLoading: thanasIsLoading } =
     useGetThanasQuery(params);
 
