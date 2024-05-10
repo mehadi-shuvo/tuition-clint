@@ -94,7 +94,11 @@ const Tuitions = () => {
               Select District
             </option>
             {allDistrictsArray.sort().map((dis) => (
-              <option key={dis} value={dis}>
+              <option
+                className="capitalize"
+                key={dis}
+                value={dis.toLowerCase()}
+              >
                 {dis}
               </option>
             ))}
@@ -107,7 +111,13 @@ const Tuitions = () => {
               Select Thana
             </option>
             {thanas?.data?.thanas.map((tha: string) => (
-              <option key={tha}>{tha}</option>
+              <option
+                className="capitalize"
+                key={tha}
+                value={tha.toLowerCase()}
+              >
+                {tha}
+              </option>
             ))}
           </select>
         </div>

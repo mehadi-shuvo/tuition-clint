@@ -27,7 +27,15 @@ const StudentProfile = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
 
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
+
   const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
+  if (isLoading) {
+    return (
+      <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
+        {watchLoader}
+      </div>
+    );
+  }
   const { data: thanas, isLoading: thanasIsLoading } =
     useGetThanasQuery(params);
 
@@ -60,14 +68,6 @@ const StudentProfile = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
-        {watchLoader}
-      </div>
-    );
-  }
-
   return (
     <div>
       <BackgroundBeamsDemo />
@@ -90,7 +90,7 @@ const StudentProfile = () => {
           </h1>
           <div className="mt-4">
             <p className="flex gap-4 italic text-base">
-              {emailSVG} {student.data.email}
+              {emailSVG} {student.data.email} hello
             </p>
             <p className="flex gap-4 italic text-base mt-3">
               {phoneOutlineSVG} {student.data.whatsApp}
