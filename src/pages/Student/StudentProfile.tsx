@@ -37,6 +37,9 @@ const StudentProfile = () => {
 
   const { data: thanas, isLoading: thanasIsLoading } =
     useGetThanasQuery(params);
+  if (thanasIsLoading) {
+    toast.loading("Upazila data is loading...");
+  }
 
   const [createPost] = useCreatePostMutation();
 
@@ -141,7 +144,7 @@ const StudentProfile = () => {
                   className="rounded-md py-2 px-3 text-stone-800 bg-white w-full"
                 >
                   <option disabled selected>
-                    {thanasIsLoading ? "Loading..." : "Select Thana"}
+                    select Upazila
                   </option>
                   {thanas?.data?.thanas.map((tha: string) => (
                     <option key={tha} value={tha.toLowerCase()}>
