@@ -35,11 +35,7 @@ const StudentProfile = () => {
   }
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
 
-  const { data: thanas, isLoading: thanasIsLoading } =
-    useGetThanasQuery(params);
-  if (thanasIsLoading) {
-    toast.loading("Upazila data is loading...");
-  }
+  const { data: thanas } = useGetThanasQuery(params);
 
   const [createPost] = useCreatePostMutation();
 
