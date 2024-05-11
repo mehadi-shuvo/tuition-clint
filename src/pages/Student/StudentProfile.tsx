@@ -11,7 +11,7 @@ import "../../App.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   useCreatePostMutation,
-  // useGetThanasQuery,
+  useGetThanasQuery,
 } from "../../redux/features/post/postApi";
 import { useGetOneStudentByIdQuery } from "../../redux/features/student/studentApi";
 import { useAppSelector } from "../../redux/hooks";
@@ -22,16 +22,11 @@ import toast from "react-hot-toast";
 import StudentTuitions from "./StudentTuitions";
 import { allDistrictsArray } from "../../assets/district";
 import { useState } from "react";
-import {
-  TUpazila,
-  arrayOfUpazilaAndDistrict,
-} from "../../assets/upazilaAndDistrict";
 
 const StudentProfile = () => {
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
-  // const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
-  const [upazilas, setUpazilas] = useState<TUpazila | undefined>(undefined);
-  // const { data: thanas } = useGetThanasQuery(params);
+  const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
+  const { data: thanas } = useGetThanasQuery(params);
   const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
   if (isLoading) {
     return (
@@ -44,15 +39,9 @@ const StudentProfile = () => {
   const [createPost] = useCreatePostMutation();
 
   const handleDistrict = (value: string) => {
-    // const queryParams: TParamsQuery[] = [];
-    // queryParams.push({ name: "district", value: value });
-    // setParams(queryParams);
-
-    const matchedDistrict = arrayOfUpazilaAndDistrict.find(
-      (dis: TUpazila) => dis.district.toLowerCase() === value
-    );
-
-    setUpazilas(matchedDistrict);
+    const queryParams: TParamsQuery[] = [];
+    queryParams.push({ name: "district", value: value });
+    setParams(queryParams);
   };
 
   const { register, handleSubmit, reset } = useForm<TPost>();
@@ -152,7 +141,7 @@ const StudentProfile = () => {
                   <option disabled selected>
                     select Upazila
                   </option>
-                  {upazilas?.thanas.map((tha: string) => (
+                  {thanas?.data?.thanas.map((tha: string) => (
                     <option key={tha} value={tha.toLowerCase()}>
                       {tha}
                     </option>
