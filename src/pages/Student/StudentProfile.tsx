@@ -58,11 +58,11 @@ const StudentProfile = () => {
           <h4 className="text-2xl md:text-4xl secondary-font uppercase bg-clip-text text-transparent bg-gradient-to-r from-[#00ccb1] to-pink-500">
             Post for Tuition
           </h4>
+          <TuitionPostForm
+            id={student.data._id}
+            whatsApp={student.data.whatsApp}
+          />
         </div>
-        <TuitionPostForm
-          id={student.data._id}
-          whatsApp={student.data.whatsApp}
-        />
       </div>
       <StudentTuitions id={student.data._id}></StudentTuitions>
     </div>
