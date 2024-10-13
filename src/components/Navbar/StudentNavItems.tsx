@@ -19,7 +19,7 @@ const StudentNavItems = ({ id }: { id: string }) => {
       name: "tuitions",
     },
     {
-      link: `/student/${id}`,
+      link: `/student-profile/${id}`,
       name: "profile",
     },
   ];

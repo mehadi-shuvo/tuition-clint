@@ -21,6 +21,7 @@ export type TPost = {
   description: string;
   district: string;
   thana: string;
+  createdAt: Date;
 };
 
 export type TParamsQuery = {

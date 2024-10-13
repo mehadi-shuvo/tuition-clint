@@ -12,6 +12,9 @@ import TeacherProfile from "../pages/Teachers/TeacherProfile";
 import StudentProfile from "../pages/Student/StudentProfile";
 import Tuitions from "../pages/Tuitions/Tuitions";
 import EmailVerification from "../pages/Verification/EmailVerification";
+import StudentProfileLayout from "../layouts/StudentProfileLayout";
+import StudentTuitions from "../pages/Student/StudentTuitions";
+import TuitionPostForm from "../pages/Student/TuitionPostForm";
 
 export const router = createBrowserRouter([
   {
@@ -30,23 +33,20 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/teacher/:id",
-        element: (
-          <PrivateRoute>
-            <TeacherProfile></TeacherProfile>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/student/:id",
-        element: <StudentProfile></StudentProfile>,
-      },
+
       {
         path: "/:id",
         element: (
           <PrivateRoute>
             <TeacherAbout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "teacher/:id",
+        element: (
+          <PrivateRoute>
+            <TeacherProfile></TeacherProfile>
           </PrivateRoute>
         ),
       },
@@ -79,6 +79,20 @@ export const router = createBrowserRouter([
       {
         path: `:id/verify/:token`,
         element: <EmailVerification />,
+      },
+    ],
+  },
+  {
+    path: "/student-profile",
+    element: <StudentProfileLayout />,
+    children: [
+      {
+        path: ":id",
+        element: <StudentTuitions></StudentTuitions>,
+      },
+      {
+        path: "post/:id",
+        element: <TuitionPostForm></TuitionPostForm>,
       },
     ],
   },
