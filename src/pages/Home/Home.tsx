@@ -54,7 +54,7 @@ const Home = () => {
           </h1>
           <div className="border-b-4 border-slate-950 mb-10"> </div>
         </div>
-        <div className="w-4/5 mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="w-4/5 mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data.data.map((teacher: TTeacher) => (
             <PrimaryCard
               key={teacher._id}

@@ -33,33 +33,35 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
   }
 
   return (
-    <div data-aos="zoom-in" data-aos-delay="50" data-aos-duration="1000">
-      <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-zinc-900">
-        <div className="flex justify-center items-center">
-          <BackgroundGradientRound>
-            <img className=" rounded-full size-48" src={image} alt="" />
-          </BackgroundGradientRound>
-        </div>
-        <p className="text-xl md:text-3xl font-bold capitalize text-center mt-4 mb-2 text-neutral-200">
-          {name}
-        </p>
-        <p className="text-lg md:text-base font-semibold text-center py-1 brand-text-color">
-          {showSubjects}
-        </p>
+    <div
+      data-aos="zoom-in"
+      data-aos-delay="50"
+      data-aos-duration="1000"
+      className="secondary-bg py-10 px-4 rounded-lg"
+    >
+      <div className="flex justify-center items-center">
+        <BackgroundGradientRound>
+          <img className=" rounded-full size-48" src={image} alt="" />
+        </BackgroundGradientRound>
+      </div>
+      <p className="text-xl md:text-3xl font-bold capitalize text-center mt-6 mb-2 text-neutral-200">
+        {name}
+      </p>
+      <p className="text-base md:text-lg text-center brand-text-color">
+        {showSubjects}
+      </p>
 
-        <p className="text-sm text-center text-neutral-600 dark:text-neutral-400 hidden md:block">
-          {description.slice(0, 80)}...
-        </p>
-        <div className="flex justify-center items-center">
-          <Link
-            to={`/${id}`}
-            className="rounded-xl px-8 py-4  text-white space-x-1 mt-4 text-lg hover:bg-slate-600
-             font-bold bg-zinc-800"
-          >
-            See Details
-          </Link>
-        </div>
-      </BackgroundGradient>
+      <p className="text-sm text-center text-white font-light py-5">
+        {description.slice(0, 120)}...
+      </p>
+      <div className="flex justify-center items-center">
+        <Link
+          to={`/${id}`}
+          className="py-1 border-x-2 border-y-2 border-y-[#1a263e] px-5 text-base hover:text-[#00ccb1] hover:border-y-2 hover:border-x-0 hover:border-[#00ccb1] transition-all duration-300 ease-in-out"
+        >
+          More Details
+        </Link>
+      </div>
     </div>
   );
 };
