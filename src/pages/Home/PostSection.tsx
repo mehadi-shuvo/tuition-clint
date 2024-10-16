@@ -17,7 +17,7 @@ const PostSection = () => {
         </h1>
         <div className="border-b-4 border-slate-950 mb-10"> </div>
       </div>
-      <div className="w-4/5 mx-auto grid gap-4 md:grid-cols-2">
+      <div className="w-4/5 mx-auto grid gap-4">
         {tuitions.data.map((tui: TPost) => (
           <PostCard key={tui._id} post={tui} />
         ))}

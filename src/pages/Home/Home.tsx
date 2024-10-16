@@ -46,6 +46,12 @@ const Home = () => {
           </a>
         </div>
       </div>
+
+      {/* =======About section============== */}
+      {/* =TODO pending= */}
+      <div className="home-about bg-left">
+        <div className="bg-[#272727a1] w-full flex justify-end"></div>
+      </div>
       {/*======== teachers section ==========*/}
       <div className="py-20">
         <div>

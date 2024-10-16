@@ -48,6 +48,12 @@
   font-family: "Madimi One", sans-serif;
 }
 
+.home-about {
+  background: url("./assets/images/about-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .profile-active-nav {
   background-color: #00ccb1;
   padding: 10px 20px;
