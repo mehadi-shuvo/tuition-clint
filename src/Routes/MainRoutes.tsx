@@ -15,6 +15,7 @@ import EmailVerification from "../pages/Verification/EmailVerification";
 import StudentProfileLayout from "../layouts/StudentProfileLayout";
 import StudentTuitions from "../pages/Student/StudentTuitions";
 import TuitionPostForm from "../pages/Student/TuitionPostForm";
+import AllBlogs from "../pages/Blog/AllBlogs";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
             <Tuitions />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/blogs",
+        element: <AllBlogs />,
       },
     ],
   },

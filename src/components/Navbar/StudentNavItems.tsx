@@ -12,11 +12,15 @@ const StudentNavItems = ({ id }: { id: string }) => {
     },
     {
       link: "/teachers",
-      name: "Teachers",
+      name: "tutors",
     },
     {
       link: "/tuitions",
       name: "tuitions",
+    },
+    {
+      link: "/blogs",
+      name: "Blogs",
     },
     {
       link: `/student-profile/${id}`,

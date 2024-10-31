@@ -12,11 +12,15 @@ const TeacherNavItems = ({ id }: { id: string }) => {
     },
     {
       link: "/teachers",
-      name: "Teachers",
+      name: "tutors",
     },
     {
       link: "/tuitions",
       name: "tuitions",
+    },
+    {
+      link: "/blogs",
+      name: "blogs",
     },
     {
       link: `/teacher/${id}`,
