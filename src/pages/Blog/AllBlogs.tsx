@@ -1,18 +1,97 @@
 import moment from "moment";
 import { useGetAllBlogsQuery } from "../../redux/features/blog/blogApi";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { TParamsQuery } from "../Home/types";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type TBlogSearchQuery = {
+  queryKey: string;
+};
 
 const AllBlogs = () => {
-  const { data, isLoading, isError } = useGetAllBlogsQuery(undefined);
+  const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data, isLoading } = useGetAllBlogsQuery(params);
+  const { register, handleSubmit } = useForm<TBlogSearchQuery>();
+  const searchHandler: SubmitHandler<TBlogSearchQuery> = (query) => {
+    setSearchQuery(query.queryKey);
+    setParams([
+      { name: "searchKey", value: searchQuery },
+      { name: "page", value: 0 },
+    ]);
+  };
+
   if (isLoading) {
     return "loading";
   }
   const metaData = data.data.meta;
-  console.log(metaData.page);
+  // console.log({ metaData });
+
+  const nextHandler = () => {
+    if (
+      searchQuery &&
+      Number(metaData.totalPages) > Number(metaData.page) + 1
+    ) {
+      setParams([
+        { name: "searchKey", value: searchQuery },
+        { name: "page", value: Number(metaData.page) + 1 },
+      ]);
+    } else if (Number(metaData.totalPages) > Number(metaData.page) + 1) {
+      setParams([{ name: "page", value: Number(metaData.page) + 1 }]);
+    }
+  };
+  const prevHandler = () => {
+    if (
+      searchQuery &&
+      Number(metaData.page) > 0 &&
+      Number(metaData.page) + 1 <= Number(metaData.totalPages)
+    ) {
+      setParams([
+        { name: "searchKey", value: searchQuery },
+        { name: "page", value: Number(metaData.page) - 1 },
+      ]);
+    } else if (
+      Number(metaData.page) > 0 &&
+      Number(metaData.page) + 1 <= Number(metaData.totalPages)
+    ) {
+      setParams([{ name: "page", value: Number(metaData.page) - 1 }]);
+    }
+  };
 
   return (
     <div>
       <div className="pt-20 w-4/5 mx-auto">
+        <form
+          onSubmit={handleSubmit(searchHandler)}
+          className="w-full h-10 mt-5 mb-10"
+        >
+          <div className="w-[300px] mx-auto">
+            <label className="relative">
+              <input
+                className="w-full text-slate-800 pl-10 py-1 outline-none"
+                {...register("queryKey")}
+                placeholder="ex: science"
+                type="text"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                onClick={handleSubmit(searchHandler)}
+                className="size-6 absolute left-1 -top-[3px] z-10 text-slate-700 cursor-pointer"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </label>
+          </div>
+        </form>
         {data.data.blogs.map((blog: any) => (
           <div className="md:flex secondary-bg gap-5 mb-10" key={blog._id}>
             <img
@@ -66,18 +145,51 @@ const AllBlogs = () => {
         <div className="flex items-center justify-center">
           <div className="join">
             <button
+              onClick={() => prevHandler()}
               className={`join-item btn ${
-                Number(metaData.page) === 0
-                  ? "btn-disabled disabled:bg-white"
-                  : ""
-              }}`}
+                Number(metaData.page) === 0 && "hidden"
+              }`}
             >
-              «
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+                />
+              </svg>
             </button>
             <button className="join-item btn">
               Page {Number(data.data.meta.page) + 1}
             </button>
-            <button className="join-item btn">»</button>
+            <button
+              onClick={() => nextHandler()}
+              className={`join-item btn ${
+                Number(metaData.totalPages) === Number(metaData.page) + 1 &&
+                "hidden"
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

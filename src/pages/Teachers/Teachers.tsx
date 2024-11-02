@@ -11,7 +11,7 @@ const Teachers = () => {
   const [option, setOption] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const { data: teachersData, isLoading } = useGetAllTeachersQuery(params);
-  // isloading loader should must be add
+  // isLoading loader must be added;
 
   const { register, handleSubmit } = useForm<TLocation>();
   const onSubmit: SubmitHandler<TLocation> = (data) => {
@@ -55,7 +55,6 @@ const Teachers = () => {
       </div>
     );
   }
-  console.log(teachersData);
 
   return (
     <div className="pt-20 mx-auto w-4/5">
