@@ -15,11 +15,13 @@ const AllBlogs = () => {
   const { data, isLoading } = useGetAllBlogsQuery(params);
   const { register, handleSubmit } = useForm<TBlogSearchQuery>();
   const searchHandler: SubmitHandler<TBlogSearchQuery> = (query) => {
-    setSearchQuery(query.queryKey);
+    console.log(query);
+
     setParams([
-      { name: "searchKey", value: searchQuery },
+      { name: "searchKey", value: query.queryKey },
       { name: "page", value: 0 },
     ]);
+    setSearchQuery(query.queryKey);
   };
 
   if (isLoading) {
@@ -80,7 +82,7 @@ const AllBlogs = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                onClick={handleSubmit(searchHandler)}
+                // onClick={handleSubmit(searchHandler)}
                 className="size-6 absolute left-1 -top-[3px] z-10 text-slate-700 cursor-pointer"
               >
                 <path

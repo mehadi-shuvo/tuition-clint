@@ -1,5 +1,7 @@
 import { baseApi } from "../../api/baseApi";
 
+type TId = { id: string };
+
 const blogApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllBlogs: builder.query({
@@ -17,7 +19,15 @@ const blogApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getBlog: builder.query({
+      query: (id: string) => {
+        return {
+          url: `blog/${id}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllBlogsQuery } = blogApi;
+export const { useGetAllBlogsQuery, useGetBlogQuery } = blogApi;

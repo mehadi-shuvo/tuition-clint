@@ -9,13 +9,13 @@ import Login from "../pages/Login/Login";
 import PrivateRoute from "../layouts/PrivateRoute";
 import Teachers from "../pages/Teachers/Teachers";
 import TeacherProfile from "../pages/Teachers/TeacherProfile";
-import StudentProfile from "../pages/Student/StudentProfile";
 import Tuitions from "../pages/Tuitions/Tuitions";
 import EmailVerification from "../pages/Verification/EmailVerification";
 import StudentProfileLayout from "../layouts/StudentProfileLayout";
 import StudentTuitions from "../pages/Student/StudentTuitions";
 import TuitionPostForm from "../pages/Student/TuitionPostForm";
 import AllBlogs from "../pages/Blog/AllBlogs";
+import Blog from "../pages/Blog/Blog";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +62,10 @@ export const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <AllBlogs />,
+      },
+      {
+        path: "/blogs/blog/:id",
+        element: <Blog />,
       },
     ],
   },

@@ -67,7 +67,12 @@ const TeacherAbout = () => {
               ))}
             </h3>
           </div>
-          <div className="text-base text-slate-400">{description}</div>
+          <div
+            style={{ whiteSpace: "pre-wrap" }}
+            className="text-base text-slate-400"
+          >
+            {description}
+          </div>
         </div>
         <div>
           <div className="md:flex md:justify-end md:flex-col md:items-end space-y-3">
