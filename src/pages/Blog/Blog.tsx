@@ -11,7 +11,8 @@ const Blog = () => {
   if (isLoadingBlog) {
     return <div> loading</div>;
   }
-  // console.log(data);
+
+  console.log(data);
 
   return (
     <div className="pt-16 w-4/5 mx-auto">
