@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <div>
       {/* <Banner></Banner> */}
-      <div className="py-20 grid lg:grid-cols-2 gap-10">
+      <div className="py-28 grid lg:grid-cols-2 gap-10">
         <div className="px-10">
           <img className="" src={bannerImg} alt="" />
         </div>
