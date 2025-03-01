@@ -82,7 +82,7 @@ const Tuitions = () => {
     <div className="pt-20">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="px-3 w-4/5 mx-auto flex flex-col lg:flex-row gap-3 md:gap-5 justify-start items-center mb-7"
+        className="px-3 w-4/5 mx-auto flex flex-col lg:flex-row gap-3 md:gap-5 justify-start items-center my-7"
       >
         <div className="grid grid-cols-2 lg:flex justify-start items-center gap-3 w-full">
           <select
@@ -128,7 +128,7 @@ const Tuitions = () => {
           {searchSVG} Search
         </button>
       </form>
-      <div className="py-10 w-4/5 mx-auto grid gap-4 md:grid-cols-2">
+      <div className="py-10 w-4/5 mx-auto grid gap-4 md:grid-cols-1">
         {postData.data.map((itm: TPost) => (
           <PostCard key={itm._id} post={itm}></PostCard>
         ))}

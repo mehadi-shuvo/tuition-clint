@@ -23,7 +23,7 @@ const TeacherNavItems = ({ id }: { id: string }) => {
       name: "blogs",
     },
     {
-      link: `/teacher/${id}`,
+      link: `/teacher-profile/${id}`,
       name: "profile",
     },
   ];

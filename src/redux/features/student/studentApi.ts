@@ -15,8 +15,18 @@ const teacherApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateStudentProfile: builder.mutation({
+      query: (data) => ({
+        url: `student/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useCreateStudentMutation, useGetOneStudentByIdQuery } =
-  teacherApi;
+export const {
+  useCreateStudentMutation,
+  useGetOneStudentByIdQuery,
+  useUpdateStudentProfileMutation,
+} = teacherApi;

@@ -17,6 +17,8 @@ import TuitionPostForm from "../pages/Student/TuitionPostForm";
 import AllBlogs from "../pages/Blog/AllBlogs";
 import Blog from "../pages/Blog/Blog";
 import TeacherProfileLayout from "../layouts/TeacherProfileLayout";
+import MyBlogs from "../pages/Teachers/MyBlogs";
+import BlogPostForm from "../pages/Teachers/BlogPostForm";
 
 export const router = createBrowserRouter([
   {
@@ -112,7 +114,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ":id",
-        element: <div>hello teacher</div>,
+        element: <TeacherProfile />,
+      },
+      {
+        path: "my-blogs/:id",
+        element: <MyBlogs />,
+      },
+      {
+        path: "write-blog/:id",
+        element: <BlogPostForm />,
       },
     ],
   },

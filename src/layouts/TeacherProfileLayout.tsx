@@ -4,6 +4,7 @@ import { useAppDispatch } from "../redux/hooks";
 import { watchLoader } from "../utils/loader";
 import { logOut } from "../redux/features/auth/authSlice";
 import { BackgroundGradientRound } from "../components/ui/round-gradient";
+import { Toaster } from "react-hot-toast";
 
 const TeacherProfileLayout = () => {
   const dispatch = useAppDispatch();
@@ -17,17 +18,7 @@ const TeacherProfileLayout = () => {
     );
   }
 
-  const {
-    name,
-    university,
-    whatsApp,
-    classRange,
-    description,
-    photo,
-    studentIDPhoto,
-    subjects,
-  } = teacher?.data;
-  console.log(teacher);
+  const { subjects } = teacher?.data;
 
   const show = [];
   for (let i = 0; i < subjects.length; i++) {
@@ -45,6 +36,7 @@ const TeacherProfileLayout = () => {
 
   return (
     <div className="drawer lg:drawer-open text-white main-bg">
+      <Toaster></Toaster>
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center">
         {/* for mobile nav */}
@@ -106,7 +98,7 @@ const TeacherProfileLayout = () => {
               Home
             </NavLink>
             <NavLink
-              to={`/student-profile/${"user?._id"}`}
+              to={`/teacher-profile/${id}`}
               className={({ isActive }) =>
                 isActive ? "profile-active-nav" : "text-white profile-nav"
               }
@@ -114,21 +106,21 @@ const TeacherProfileLayout = () => {
               profile
             </NavLink>
             <NavLink
-              to="/teachers"
+              to={`/teacher-profile/my-blogs/${id}`}
               className={({ isActive }) =>
                 isActive ? "profile-active-nav" : "text-white profile-nav"
               }
             >
-              Tutors
+              My Blogs
             </NavLink>
 
             <NavLink
-              to={`/student-profile/post/${"user?._id"}`}
+              to={`/teacher-profile/write-blog/${id}`}
               className={({ isActive }) =>
                 isActive ? "profile-active-nav" : "text-white profile-nav"
               }
             >
-              Post Tuition
+              write a blog
             </NavLink>
           </div>
 

@@ -110,7 +110,7 @@ const StudentRegister = () => {
               <p className="text-gray-600 text-xs italic mt-2">
                 {errors.schoolOrCollage ? (
                   <span className="text-red-600">
-                    School or College name is is required
+                    School/College name is is required
                   </span>
                 ) : (
                   ""

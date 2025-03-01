@@ -2,14 +2,47 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BackgroundGradientRound } from "../components/ui/round-gradient";
 import { TUser } from "../pages/Home/types";
 import { logOut, useAuthCurrentUser } from "../redux/features/auth/authSlice";
-import { useGetOneStudentByIdQuery } from "../redux/features/student/studentApi";
+import {
+  useGetOneStudentByIdQuery,
+  useUpdateStudentProfileMutation,
+} from "../redux/features/student/studentApi";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { watchLoader } from "../utils/loader";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = {
+  name: string;
+  schoolOrCollage: string;
+  photo: string;
+  whatsApp: string;
+};
 
 const StudentProfileLayout = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
+  const [updateStudent, { isLoading: isUploading }] =
+    useUpdateStudentProfileMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    let validData: { [key: string]: string } = { id: student.data._id };
+    for (const [key, value] of Object.entries(data)) {
+      if (value) {
+        validData[key] = value;
+      }
+    }
+    console.log(validData);
+
+    await updateStudent(validData);
+    window.location.reload();
+  };
 
   const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
   if (isLoading) {
@@ -19,6 +52,7 @@ const StudentProfileLayout = () => {
       </div>
     );
   }
+  // console.log(student);
 
   const logoutHandler = () => {
     dispatch(logOut());
@@ -51,6 +85,50 @@ const StudentProfileLayout = () => {
           <a className="text-3xl font-semibold text-white">LOGO</a>
         </div>
         <div className="w-full">
+          <div
+            className={`${
+              isModalOpen ? "block" : "hidden"
+            } w-4/5 mx-auto mt-16`}
+          >
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="grid grid-cols-2 gap-10">
+                <label>
+                  <p>Name</p>
+                  <input
+                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    placeholder={student.data.name}
+                    {...register("name")}
+                  />
+                </label>
+                <label>
+                  <p>School/College</p>
+                  <input
+                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    placeholder={student.data.schoolOrCollage}
+                    {...register("schoolOrCollage")}
+                  />
+                </label>
+                <label>
+                  <p>WhatsApp</p>
+                  <input
+                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    placeholder={student.data.whatsApp}
+                    {...register("whatsApp")}
+                  />
+                </label>
+                <label>
+                  <p>Photo</p>
+                  <input
+                    type="text"
+                    className="bg-transparent border-b-2 border-[#444] w-full file:bg-transparent file:border-none file:border-[#444] file:text-white file:text-start focus:outline-none"
+                    {...register("photo")}
+                  />
+                </label>
+
+                <input type="submit" value="update" />
+              </div>
+            </form>
+          </div>
           <Outlet></Outlet>
         </div>
       </div>
@@ -69,6 +147,25 @@ const StudentProfileLayout = () => {
                 alt=""
               />
             </BackgroundGradientRound>
+            <div
+              className="absolute -bottom-2 right-8 md:right-20 bg-[#3333336e] rounded-full p-3 z-20 cursor-pointer text-white hover:text-[#00ccb1] transition-all delay-300 ease-linear"
+              onClick={() => setIsModalOpen(!isModalOpen)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+            </div>
           </div>
 
           <h1 className="text-xl font-medium uppercase secondary-font text-center mt-3">

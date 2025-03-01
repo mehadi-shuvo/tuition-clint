@@ -27,7 +27,38 @@ const blogApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getUserBlogs: builder.query({
+      query: (id: string) => {
+        return {
+          url: `blog/user/${id}`,
+          method: "GET",
+        };
+      },
+    }),
+    createBlog: builder.mutation({
+      query: (data) => {
+        return {
+          url: "blog",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    deleteBlog: builder.mutation({
+      query: ({ id }: TId) => {
+        return {
+          url: `blog/${id}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllBlogsQuery, useGetBlogQuery } = blogApi;
+export const {
+  useGetAllBlogsQuery,
+  useGetBlogQuery,
+  useGetUserBlogsQuery,
+  useCreateBlogMutation,
+  useDeleteBlogMutation,
+} = blogApi;

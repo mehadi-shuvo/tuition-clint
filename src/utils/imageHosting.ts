@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export const imageHosting = async (imageData: FormData) => {
   let imgInfo;
 
@@ -9,7 +11,12 @@ export const imageHosting = async (imageData: FormData) => {
     }
   )
     .then((res) => res.json())
-    .then((imgHostInfo) => (imgInfo = imgHostInfo));
+    .then((imgHostInfo) => (imgInfo = imgHostInfo))
+    .catch((err) =>
+      toast.error(
+        "Failed to upload image. Please try again later. Error: " + err.message
+      )
+    );
 
   return imgInfo;
 };
