@@ -1,5 +1,4 @@
 import { TPost, TUser } from "../../pages/Home/types";
-import { bookSVG, locationSVG, whatsAppSVG } from "../../assets/svgs/localSVGs";
 import { useAppSelector } from "../../redux/hooks";
 import { useAuthCurrentUser } from "../../redux/features/auth/authSlice";
 import toast from "react-hot-toast";

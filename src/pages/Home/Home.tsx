@@ -8,6 +8,7 @@ import { TTeacher } from "./types";
 import PostSection from "./PostSection";
 import { watchLoader } from "../../utils/loader";
 import bannerImg from "../../assets/images/undraw_educator_re_ju47.svg";
+import Header from "../../components/ui/Header";
 
 AOS.init();
 
@@ -54,12 +55,11 @@ const Home = () => {
       </div>
       {/*======== teachers section ==========*/}
       <div className="py-20">
-        <div>
-          <h1 className="mb-5 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00ccb1] to-pink-500 text-4xl font-extrabold tracking-widest secondary-font">
-            OUR TEACHERS
-          </h1>
-          <div className="border-b-4 border-slate-950 mb-10"> </div>
-        </div>
+        <Header
+          heading="our tutors"
+          subheading=" Meet our dedicated and experienced educators who are committed to
+        helping you achieve your academic goals."
+        />
         <div className="w-4/5 mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data.data.map((teacher: TTeacher) => (
             <PrimaryCard

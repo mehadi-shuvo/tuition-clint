@@ -1,14 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useGetOneTeacherBYIdQuery } from "../../redux/features/teacher/teacherApi";
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useDispatch } from "react-redux";
 import { imageHosting } from "../../utils/imageHosting";
 import { useCreateBlogMutation } from "../../redux/features/blog/blogApi";
-import toast, { Toaster } from "react-hot-toast";
-// import { addBlog } from "@/redux/blogSlice";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -20,11 +18,9 @@ const schema = z.object({
 type BlogFormData = z.infer<typeof schema>;
 
 const BlogPostForm = () => {
-  const { register, handleSubmit, control, setValue, watch } =
-    useForm<BlogFormData>({
-      resolver: zodResolver(schema),
-    });
-  const dispatch = useDispatch();
+  const { register, handleSubmit, setValue } = useForm<BlogFormData>({
+    resolver: zodResolver(schema),
+  });
   const [keywords, setKeywords] = useState<string[]>([]);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const { id } = useParams<{ id: string }>();

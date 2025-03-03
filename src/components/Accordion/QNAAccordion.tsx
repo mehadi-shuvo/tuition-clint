@@ -9,8 +9,10 @@ import {
 
 import "react-accessible-accordion/dist/fancy-example.css";
 import { chevronDown, chevronUp } from "../../assets/svgs/localSVGs";
+import Aos from "aos";
 
 const QNAAccordion = () => {
+  Aos.init();
   const [isOpen, setIsOpen] = useState(false);
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -19,6 +21,8 @@ const QNAAccordion = () => {
   return (
     <Accordion allowZeroExpanded>
       <AccordionItem
+        data-aos="zoom-in"
+        data-aos-duration="1000"
         onClick={toggleAccordion}
         className="bg-slate-950 mb-3 rounded-xl"
       >
@@ -37,6 +41,8 @@ const QNAAccordion = () => {
         </AccordionItemPanel>
       </AccordionItem>
       <AccordionItem
+        data-aos="zoom-in"
+        data-aos-duration="1000"
         onClick={toggleAccordion}
         className="bg-slate-950 mb-3 rounded-xl"
       >
@@ -55,6 +61,8 @@ const QNAAccordion = () => {
         </AccordionItemPanel>
       </AccordionItem>
       <AccordionItem
+        data-aos="zoom-in"
+        data-aos-duration="1000"
         onClick={toggleAccordion}
         className="bg-slate-950 mb-3 rounded-xl"
       >
@@ -73,6 +81,8 @@ const QNAAccordion = () => {
         </AccordionItemPanel>
       </AccordionItem>
       <AccordionItem
+        data-aos="zoom-in"
+        data-aos-duration="1000"
         onClick={toggleAccordion}
         className="bg-slate-950 mb-3 rounded-xl"
       >

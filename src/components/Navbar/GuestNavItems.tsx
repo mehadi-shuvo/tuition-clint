@@ -3,34 +3,54 @@ import { NavLink } from "react-router-dom";
 const GuestNavItems = () => {
   return (
     <div className="flex items-center gap-5">
-      <div className="hidden lg:block main-btn rounded-md text-lg capitalize cursor-pointer">
-        <NavLink to={`/auth/login`}>login</NavLink>
+      {/* Desktop View */}
+      <div className="hidden lg:block">
+        <NavLink
+          to="/auth/login"
+          className="px-8 py-3 bg-[#00ccb1] text-white font-semibold rounded-lg hover:bg-[#00b8a0] transition-all duration-300"
+        >
+          Login
+        </NavLink>
       </div>
-      <div className="dropdown dropdown-hover dropdown-end hidden lg:block">
+
+      {/* Desktop Dropdown */}
+      <div className="hidden lg:block dropdown dropdown-hover dropdown-end">
         <div
           tabIndex={0}
-          role="button "
-          className=" m-1 main-btn-outline rounded-md text-lg capitalize cursor-pointer "
+          role="button"
+          className="px-6 py-2 border-2 border-[#00ccb1] text-[#00ccb1] font-semibold rounded-lg hover:bg-[#00ccb1] hover:text-white transition-all duration-300"
         >
-          SignUp
+          Sign Up
         </div>
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow navbar-bg mt-2 w-52 "
+          className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-lg w-52 mt-2"
         >
-          <li className="border-b-2  rounded-sm hover:border-[#00ccb1] hover:text-[#00ccb1] text-lg font-medium">
-            <NavLink to={`/auth/sign-up/teacher`}>Register As Teacher</NavLink>
+          <li className="hover:bg-gray-100 rounded-md transition-all duration-300">
+            <NavLink
+              to="/auth/sign-up/teacher"
+              className="block px-4 py-2 text-gray-700 hover:text-[#00ccb1]"
+            >
+              Register As Teacher
+            </NavLink>
           </li>
-          <li className="border-b-2  rounded-sm hover:border-[#00ccb1] hover:text-[#00ccb1] text-lg font-medium">
-            <NavLink to={`/auth/sign-up/student`}>Register As Student</NavLink>
+          <li className="hover:bg-gray-100 rounded-md transition-all duration-300">
+            <NavLink
+              to="/auth/sign-up/student"
+              className="block px-4 py-2 text-gray-700 hover:text-[#00ccb1]"
+            >
+              Register As Student
+            </NavLink>
           </li>
         </ul>
       </div>
-      <div className="dropdown dropdown-hover dropdown-end lg:hidden">
+
+      {/* Mobile View */}
+      <div className="lg:hidden dropdown dropdown-end">
         <div
           tabIndex={0}
-          role="button "
-          className=" m-1 rounded-md text-lg capitalize cursor-pointer"
+          role="button"
+          className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,17 +69,32 @@ const GuestNavItems = () => {
         </div>
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow navbar-bg mt-2 w-52 "
+          className="dropdown-content z-[1] menu p-2 shadow bg-white rounded-lg w-52 mt-6"
         >
-          <li className="border-b-2  rounded-sm hover:border-[#00ccb1] hover:text-[#00ccb1] text-lg font-medium">
-            <NavLink to={`/auth/sign-up/teacher`}>Register As Teacher</NavLink>
+          <li className="hover:bg-gray-100 rounded-md transition-all duration-300">
+            <NavLink
+              to="/auth/sign-up/teacher"
+              className="block px-4 py-2 text-gray-700 hover:text-[#00ccb1]"
+            >
+              Register As Teacher
+            </NavLink>
           </li>
-          <li className="border-b-2  rounded-sm hover:border-[#00ccb1] hover:text-[#00ccb1] text-lg font-medium">
-            <NavLink to={`/auth/sign-up/student`}>Register As Student</NavLink>
+          <li className="hover:bg-gray-100 rounded-md transition-all duration-300">
+            <NavLink
+              to="/auth/sign-up/student"
+              className="block px-4 py-2 text-gray-700 hover:text-[#00ccb1]"
+            >
+              Register As Student
+            </NavLink>
           </li>
-          <div className="main-btn lg:hidden rounded-md text-lg capitalize cursor-pointer mt-5 text-center">
-            <NavLink to={`/auth/login`}>login</NavLink>
-          </div>
+          <li className="mt-2">
+            <NavLink
+              to="/auth/login"
+              className="block px-4 py-2 bg-[#00ccb1] text-white font-semibold rounded-lg hover:bg-[#00b8a0] text-center transition-all duration-300"
+            >
+              Login
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>
