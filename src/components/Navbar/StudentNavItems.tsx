@@ -5,71 +5,58 @@ import { logOut } from "../../redux/features/auth/authSlice";
 const StudentNavItems = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const items = [
-    {
-      link: "/",
-      name: "home",
-    },
-    {
-      link: "/teachers",
-      name: "tutors",
-    },
-    {
-      link: "/tuitions",
-      name: "tuitions",
-    },
-    {
-      link: "/blogs",
-      name: "Blogs",
-    },
-    {
-      link: `/student-profile/${id}`,
-      name: "profile",
-    },
+    { link: "/", name: "Home" },
+    { link: "/teachers", name: "Tutors" },
+    { link: "/tuitions", name: "Tuitions" },
+    { link: "/blogs", name: "Blogs" },
+    { link: `/student-profile/${id}`, name: "Profile" },
   ];
 
   const logoutHandler = () => {
     dispatch(logOut());
     navigate("/");
   };
+
   return (
-    <div className="">
-      {/* Navbar for  large device */}
-      <div className="hidden lg:flex gap-5 items-center">
+    <div className="flex items-center">
+      {/* Navbar for Large Devices */}
+      <div className="hidden lg:flex items-center gap-8">
         {items.map((item) => (
-          <li className="list-none capitalize" key={item.name}>
-            <NavLink
-              to={item.link}
-              className={({ isActive, isPending }) =>
+          <NavLink
+            key={item.link}
+            to={item.link}
+            className={({ isActive }) =>
+              `text-lg font-medium transition-all duration-300 ${
                 isActive
-                  ? "text-[#00ccb1] text-lg font-medium"
-                  : isPending
-                  ? ""
-                  : "transition-all ease-in delay-200 hover:text-[#00ccb1] text-lg font-medium"
-              }
-            >
-              {item.name}
-            </NavLink>
-          </li>
+                  ? "text-[#00ccb1]"
+                  : "text-gray-700 hover:text-[#00ccb1]"
+              }`
+            }
+          >
+            {item.name}
+          </NavLink>
         ))}
         <button
           onClick={logoutHandler}
-          className="bg-[#00ccb1] hover:bg-[#258376] delay-300 ease-linear transition-all px-5 py-2 rounded-lg text-xl font-bold ml-20"
+          className="ml-8 px-6 py-2 bg-[#00ccb1] text-white font-semibold rounded-lg hover:bg-[#00b8a0] transition-all duration-300"
         >
           Logout
         </button>
       </div>
-      {/* Navbar for small and medium  device*/}
+
+      {/* Navbar for Small and Medium Devices */}
       <div className="lg:hidden">
-        <div className="dropdown dropdown-bottom dropdown-end">
-          <div tabIndex={0} role="button" className="">
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-6 h-6 text-gray-700"
             >
               <path
                 strokeLinecap="round"
@@ -80,28 +67,28 @@ const StudentNavItems = ({ id }: { id: string }) => {
           </div>
           <ul
             tabIndex={0}
-            className="shadow-white-xl navbar-bg fixed z-50 menu dropdown-content w-[200px] mt-6 rounded-b-md"
+            className="dropdown-content z-50 mt-2 p-4 shadow-lg bg-white rounded-lg w-48 space-y-3"
           >
             {items.map((item) => (
-              <li className="list-none capitalize" key={item.link}>
+              <li key={item.link}>
                 <NavLink
                   to={item.link}
-                  className={({ isActive, isPending }) =>
-                    isActive
-                      ? "text-[#00ccb1] text-lg font-medium"
-                      : isPending
-                      ? ""
-                      : "transition-all ease-in delay-200 hover:text-[#00ccb1] text-lg font-medium"
+                  className={({ isActive }) =>
+                    `block text-lg font-medium transition-all duration-300 ${
+                      isActive
+                        ? "text-[#00ccb1]"
+                        : "text-gray-700 hover:text-[#00ccb1]"
+                    }`
                   }
                 >
                   {item.name}
                 </NavLink>
               </li>
             ))}
-            <li className="mt-10 mb-5 w-full flex justify-center items-center list-none">
+            <li>
               <button
                 onClick={logoutHandler}
-                className="bg-[#00ccb1] hover:bg-[#258376] delay-300 ease-linear transition-all px-5 py-2 rounded-lg text-lg font-bold"
+                className="w-full px-4 py-2 bg-[#00ccb1] text-white font-semibold rounded-lg hover:bg-[#00b8a0] transition-all duration-300"
               >
                 Logout
               </button>

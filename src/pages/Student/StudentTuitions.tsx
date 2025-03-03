@@ -8,12 +8,16 @@ import { XMarkSVG } from "../../assets/svgs/localSVGs";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { useEffect } from "react";
 
 const StudentTuitions = () => {
   const { id } = useParams();
-  console.log(id);
   const { isLoading, data, refetch } = useGetSingleUserPostsQuery(id);
   const [deletePost] = useDeleteSinglePostMutation();
+
+  useEffect(() => {
+    refetch();
+  }, [id, refetch]);
 
   if (isLoading) {
     return (
@@ -22,7 +26,6 @@ const StudentTuitions = () => {
       </div>
     );
   }
-  console.log(data);
 
   const handelDeletePost = (postId: string) => {
     Swal.fire({
@@ -32,10 +35,11 @@ const StudentTuitions = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deletePost(postId);
+        await deletePost(postId);
         refetch();
+        console.log(data);
         Swal.fire({
           title: "Deleted!",
           text: "Your file has been deleted.",
@@ -43,7 +47,6 @@ const StudentTuitions = () => {
         });
       }
     });
-    console.log({ data });
   };
 
   return (

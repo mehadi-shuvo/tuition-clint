@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { BackgroundGradient } from "../ui/background-gradient";
 import { Link } from "react-router-dom";
 import { BackgroundGradientRound } from "../ui/round-gradient";
 import AOS from "aos";
@@ -21,7 +20,7 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
   id,
   subjects,
 }) => {
-  AOS.init(); // Initialize AOS directly
+  AOS.init();
 
   const showSubjects = [];
   for (let i = 0; i < subjects.length; i++) {
@@ -56,7 +55,7 @@ export const PrimaryCard: React.FC<TPrimaryCard> = ({
       </p>
       <div className="flex justify-center items-center">
         <Link
-          to={`/${id}`}
+          to={`/about-teacher/${id}`}
           className="py-1 border-x-2 border-y-2 border-y-[#1a263e] px-5 text-base hover:text-[#00ccb1] hover:border-y-2 hover:border-x-0 hover:border-[#00ccb1] transition-all duration-300 ease-in-out"
         >
           More Details

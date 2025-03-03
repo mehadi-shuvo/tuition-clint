@@ -76,7 +76,7 @@ const Teachers = () => {
           ))}
         </select>
       </form>
-      <div className="py-10 grid md:grid-cols-3 gap-5">
+      <div className="py-10 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {teachersData.data.map((teacher: TTeacher) => (
           <PrimaryCard
             key={teacher._id}

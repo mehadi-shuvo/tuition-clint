@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { watchLoader } from "../utils/loader";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Toaster } from "react-hot-toast";
 
 type Inputs = {
   name: string;
@@ -61,6 +62,7 @@ const StudentProfileLayout = () => {
 
   return (
     <div className="drawer lg:drawer-open text-white main-bg">
+      <Toaster />
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-center">
         {/* for mobile nav */}
@@ -88,44 +90,72 @@ const StudentProfileLayout = () => {
           <div
             className={`${
               isModalOpen ? "block" : "hidden"
-            } w-4/5 mx-auto mt-16`}
+            } w-full max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg text-slate-700`}
           >
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="grid grid-cols-2 gap-10">
-                <label>
-                  <p>Name</p>
+              {/* Form Grid Layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Name Input */}
+                <label className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Name</p>
                   <input
-                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
                     placeholder={student.data.name}
                     {...register("name")}
                   />
                 </label>
-                <label>
-                  <p>School/College</p>
+
+                {/* School/College Input */}
+                <label className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">
+                    School/College
+                  </p>
                   <input
-                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
                     placeholder={student.data.schoolOrCollage}
                     {...register("schoolOrCollage")}
                   />
                 </label>
-                <label>
-                  <p>WhatsApp</p>
+
+                {/* WhatsApp Input */}
+                <label className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">WhatsApp</p>
                   <input
-                    className="bg-transparent border-b-2 border-[#444] w-full focus:outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
                     placeholder={student.data.whatsApp}
                     {...register("whatsApp")}
                   />
                 </label>
-                <label>
-                  <p>Photo</p>
+
+                {/* Photo Input */}
+                <label className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Photo URL</p>
                   <input
                     type="text"
-                    className="bg-transparent border-b-2 border-[#444] w-full file:bg-transparent file:border-none file:border-[#444] file:text-white file:text-start focus:outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                    placeholder="Paste photo URL here"
                     {...register("photo")}
                   />
                 </label>
+              </div>
 
-                <input type="submit" value="update" />
+              {/* Buttons Section */}
+              <div className="flex justify-end gap-4 mt-8">
+                {/* Cancel Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-300"
+                >
+                  Cancel
+                </button>
+
+                {/* Submit Button */}
+                <input
+                  type="submit"
+                  value="Update"
+                  className="px-6 py-2 text-sm font-medium text-white bg-[#00ccb1] rounded-lg hover:bg-[#00b8a0] transition-all duration-300 cursor-pointer"
+                />
               </div>
             </form>
           </div>
