@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 import { useGetOneTeacherBYIdQuery } from "../../redux/features/teacher/teacherApi";
 import "../../App.css";
 import { watchLoader } from "../../utils/loader";
-import { useAppDispatch } from "../../redux/hooks";
+
 const TeacherProfile = () => {
-  const dispatch = useAppDispatch();
   let { id } = useParams();
   const { data, isLoading } = useGetOneTeacherBYIdQuery(id as string);
   if (isLoading) {
@@ -20,7 +19,6 @@ const TeacherProfile = () => {
     whatsApp,
     classRange,
     description,
-    photo,
     studentIDPhoto,
     subjects,
   } = data?.data;

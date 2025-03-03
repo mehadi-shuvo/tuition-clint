@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { BackgroundGradientRound } from "../components/ui/round-gradient";
 import { TUser } from "../pages/Home/types";
 import { logOut, useAuthCurrentUser } from "../redux/features/auth/authSlice";
@@ -11,6 +11,7 @@ import { watchLoader } from "../utils/loader";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
+import logo from "../assets/logo2.png";
 
 type Inputs = {
   name: string;
@@ -84,7 +85,16 @@ const StudentProfileLayout = () => {
               />
             </svg>
           </label>
-          <a className="text-3xl font-semibold text-white">LOGO</a>
+          <div className="">
+            <Link
+              to={"/"}
+              className="uppercase flex justify-between items-center flex-col text-base"
+            >
+              <img className="size-10 rounded-full" src={logo} />
+
+              <p className="secondary-font font-black">tuition point</p>
+            </Link>
+          </div>
         </div>
         <div className="w-full">
           <div

@@ -56,7 +56,7 @@ const StudentNavItems = ({ id }: { id: string }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-gray-700"
+              className="size-12"
             >
               <path
                 strokeLinecap="round"

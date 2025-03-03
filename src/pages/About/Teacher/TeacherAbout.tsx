@@ -9,7 +9,7 @@ import { watchLoader } from "../../../utils/loader";
 
 const TeacherAbout = () => {
   const params = useParams();
-  const { data, error, isLoading } = useGetOneTeacherQuery(params.id as string);
+  const { data, isLoading } = useGetOneTeacherQuery(params.id as string);
 
   if (isLoading) {
     return (

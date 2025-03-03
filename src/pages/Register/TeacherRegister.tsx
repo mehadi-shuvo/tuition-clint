@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import "../../App.css";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   removeSubject,
@@ -20,10 +19,10 @@ interface IFormInput {
   email: string;
   phone: string;
   whatsApp: string;
-  photo: string;
+  photo: FileList;
   district: string;
   subjects: string[];
-  studentID: string;
+  studentID: FileList;
   description: string;
   password: string;
   conPass: string;
@@ -33,24 +32,19 @@ interface IFormInput {
 const TeacherRegister = () => {
   const [createTeacher] = useCreateTeacherMutation();
   const [selectedSubjects, setSelectedSubject] = useState("");
-  const [pass, setpass] = useState("");
+  const [pass, setPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(false);
   const dispatch = useAppDispatch();
   const subjects = useAppSelector(
     (state: RootState) => state.subjectsSlice.subjects
   );
+  const navigate = useNavigate();
 
-  console.log(pass);
-
-  const handleCheckPss = (value: string) => {
+  const handleCheckPass = (value: string) => {
     if (value === pass) {
       setConfirmPassword(true);
     }
   };
-
-  // console.log(teacherData);
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -58,10 +52,8 @@ const TeacherRegister = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  //submit handler
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(errors.name);
-    // account owner image process
+    // Image upload process
     const image = data.photo[0];
     const imageData = new FormData();
     imageData.append("image", image);
@@ -69,8 +61,7 @@ const TeacherRegister = () => {
       imageData
     );
 
-    // account owner's student id card image process
-    // let idCardInfo: { studentIDPhoto: string } | undefined;
+    // Student ID card upload process
     const idCard = data.studentID[0];
     const idCardData = new FormData();
     idCardData.append("image", idCard);
@@ -78,9 +69,7 @@ const TeacherRegister = () => {
       idCardData
     );
 
-    //     >z>z
-
-    // call createTeacher Api
+    // Create teacher
     const {
       name,
       university,
@@ -88,7 +77,6 @@ const TeacherRegister = () => {
       whatsApp,
       email,
       district,
-
       password,
       classRange,
     } = data;
@@ -106,11 +94,9 @@ const TeacherRegister = () => {
       subjects: subjects,
     }).unwrap();
 
-    // make userInfo for login
-
     navigate("/auth/login");
     toast.success(
-      "Successfully registered. Please check your email. If you not find please check spam folder",
+      "Successfully registered. Please check your email. If you don't find it, please check your spam folder.",
       { duration: 6000 }
     );
   };
@@ -125,337 +111,328 @@ const TeacherRegister = () => {
   };
 
   return (
-    <div className="flex justify-center items-center my-20 ">
-      <div className="w-11/12 md:w-3/5 mx-auto p-5 lg:p-10 bg-slate-950 text-white rounded-lg">
-        <h1 className="text-2xl lg:text-4xl font-bold text-center brand-text-color capitalize pb-8">
-          Register as Teacher
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* name university row */}
-          <div className="grid md:grid-cols-2 gap-5 mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Name
-              </label>
-              <input
-                {...register("name", { required: true })}
-                type="text"
-                placeholder="Ex. Mehadi Hasan"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.name ? (
-                  <span className="text-red-600">Name is required</span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                University Name
-              </label>
-              <input
-                {...register("university", { required: true })}
-                type="text"
-                placeholder="Ex. Dhaka University"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.university ? (
-                  <span className="text-red-600">
-                    University or Collage name is required
-                  </span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-          </div>
-          {/* phone email row */}
-          <div className="grid md:grid-cols-2 gap-5 mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                WhatsApp Number
-              </label>
-              <input
-                {...register("whatsApp", { required: true })}
-                type="text"
-                placeholder="Ex. 01700000000"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.whatsApp ? (
-                  <span className="text-red-600">
-                    WhatsApp number is required for contact
-                  </span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                E-mail
-              </label>
-              <input
-                {...register("email", { required: true })}
-                type="email"
-                placeholder="Ex. example@gmail.com"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.email ? (
-                  <span className="text-red-600">
-                    Email is required for contact
-                  </span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-          </div>
-          {/* self and student ID pic*/}
-          <div className="grid md:grid-cols-2 gap-5 mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Photo
-              </label>
-              <input
-                {...register("photo", { required: true })}
-                type="file"
-                className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.photo ? (
-                  <span className="text-red-600">Your picture is required</span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Student ID
-              </label>
-              <input
-                {...register("studentID", { required: true })}
-                type="file"
-                placeholder="Ex. example@gmail.com"
-                className="file-input file-input-bordered file-input-md w-full border-none h-9 bg-white text-slate-900"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.studentID ? (
-                  <span className="text-red-600">
-                    Your student ID card's picture is required
-                  </span>
-                ) : (
-                  ""
-                )}
-              </p>
-            </div>
-          </div>
-          {/* Subjects and class limit */}
-          <div className="grid md:grid-cols-2 gap-5 mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Subjects
-              </label>
-              <div className="grid grid-cols-2 items-center gap-2">
-                <select
-                  value={selectedSubjects}
-                  onChange={(e) => subjectSelectionHandler(e.target.value)}
-                  className="select select-bordered w-full bg-white text-stone-950"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#f0f4f9] to-[#e0e9f4] p-4">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all hover:scale-105">
+        {/* Header Section */}
+        <div className="bg-[#00ccb1] p-6 text-center">
+          <h1 className="text-3xl font-bold text-white">Register as Teacher</h1>
+          <p className="text-sm text-white mt-2">
+            Join us to start your teaching journey
+          </p>
+        </div>
+
+        {/* Form Section */}
+        <div className="p-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Name and University Row */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
                 >
-                  <option value="" disabled selected>
-                    Select Subjects
-                  </option>
-                  <option value="Bangla">Bangla</option>
-                  <option value="English">English</option>
-                  <option value="Math">Math</option>
-                  <option value="Science">Science</option>
-                  <option value="Physics">Physics</option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Biology">Biology</option>
-                </select>
-                <div
-                  className={`overflow-x-scroll flex gap-2 items-center ${
-                    subjects.length > 0 && "bg-white rounded-md py-[6px] px-1"
-                  }`}
-                >
-                  {subjects.map((subject) => (
-                    <div
-                      key={subject}
-                      className="bg-blue-400 px-2 py-1 rounded-md flex items-center relative"
-                    >
-                      {subject}
-                      <div
-                        onClick={() => subjectRemoveHandler(subject)}
-                        className=" bg-slate-950 size-3 flex justify-center cursor-pointer items-center rounded-full text-white absolute top-0 right-0 text-xs"
-                      >
-                        <span className="mb-[1px]">x</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                  Name
+                </label>
+                <input
+                  {...register("name", { required: true })}
+                  type="text"
+                  placeholder="Ex. Mehadi Hasan"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">Name is required</p>
+                )}
               </div>
-              <p className="text-gray-600 text-xs italic mt-2">
-                {subjects.length === 0 ? (
-                  <span className="text-red-600">
-                    You should must select minimum one subject
-                  </span>
-                ) : (
-                  ""
+              <div>
+                <label
+                  htmlFor="university"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  University
+                </label>
+                <input
+                  {...register("university", { required: true })}
+                  type="text"
+                  placeholder="Ex. Dhaka University"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.university && (
+                  <p className="text-red-500 text-sm mt-1">
+                    University name is required
+                  </p>
                 )}
-              </p>
+              </div>
             </div>
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Class range
-              </label>
-              <select
-                {...register("classRange", { required: true })}
-                className="text-center select select-bordered w-full bg-white text-stone-950"
-              >
-                <option value="1-12">Class 1 to 12</option>
-                <option value="1-10">Class 1 to 10</option>
-                <option value="1-8">Class 1 to 8</option>
-                <option value="1-6">Class 1 to 6</option>
-              </select>
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.classRange ? (
-                  <span className="text-red-600">
-                    Select your class range it's required
-                  </span>
-                ) : (
-                  ""
+
+            {/* WhatsApp and Email Row */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="whatsApp"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  WhatsApp
+                </label>
+                <input
+                  {...register("whatsApp", { required: true })}
+                  type="text"
+                  placeholder="Ex. 01700000000"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.whatsApp && (
+                  <p className="text-red-500 text-sm mt-1">
+                    WhatsApp number is required
+                  </p>
                 )}
-              </p>
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email
+                </label>
+                <input
+                  {...register("email", { required: true })}
+                  type="email"
+                  placeholder="Ex. example@gmail.com"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">Email is required</p>
+                )}
+              </div>
             </div>
-          </div>
-          {/* location */}
-          <div className="grid  mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Location
-              </label>
-              <select
-                {...register("district", { required: true })}
-                className="rounded-md py-2 px-3 text-black bg-white w-full"
-              >
-                <option disabled selected>
-                  Select District
-                </option>
-                {allDistrictsArray.sort().map((dis) => (
-                  <option key={dis} value={dis.toLowerCase()}>
-                    {dis}
+
+            {/* Photo and Student ID Row */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="photo"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Photo
+                </label>
+                <input
+                  {...register("photo", { required: true })}
+                  type="file"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.photo && (
+                  <p className="text-red-500 text-sm mt-1">Photo is required</p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="studentID"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Student ID
+                </label>
+                <input
+                  {...register("studentID", { required: true })}
+                  type="file"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.studentID && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Student ID is required
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Subjects and Class Range Row */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="subjects"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Subjects
+                </label>
+                <div className="flex flex-col items-center gap-2">
+                  <select
+                    value={selectedSubjects}
+                    onChange={(e) => subjectSelectionHandler(e.target.value)}
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                  >
+                    <option value="" disabled>
+                      Select Subjects
+                    </option>
+                    <option value="Bangla">Bangla</option>
+                    <option value="English">English</option>
+                    <option value="Math">Math</option>
+                    <option value="Science">Science</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                  </select>
+                  <div className="flex gap-2 flex-wrap">
+                    {subjects.map((subject) => (
+                      <div
+                        key={subject}
+                        className="bg-blue-400 px-2 py-1 rounded-md flex items-center relative"
+                      >
+                        {subject}
+                        <div
+                          onClick={() => subjectRemoveHandler(subject)}
+                          className="bg-slate-950 size-3 flex justify-center cursor-pointer items-center rounded-full text-white absolute top-0 right-0 text-xs"
+                        >
+                          <span className="mb-[1px]">x</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {subjects.length === 0 && (
+                  <p className="text-red-500 text-sm mt-1">
+                    You must select at least one subject
+                  </p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="classRange"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Class Range
+                </label>
+                <select
+                  {...register("classRange", { required: true })}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                >
+                  <option value="1-12">Class 1 to 12</option>
+                  <option value="1-10">Class 1 to 10</option>
+                  <option value="1-8">Class 1 to 8</option>
+                  <option value="1-6">Class 1 to 6</option>
+                </select>
+                {errors.classRange && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Class range is required
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Location and Description Row */}
+            <div className="grid gap-6">
+              <div>
+                <label
+                  htmlFor="district"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Location
+                </label>
+                <select
+                  {...register("district", { required: true })}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                >
+                  <option value="" disabled>
+                    Select District
                   </option>
-                ))}
-              </select>
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.district ? (
-                  <span className="text-red-600">
-                    Your location is required
-                  </span>
-                ) : (
-                  ""
+                  {allDistrictsArray.sort().map((dis) => (
+                    <option key={dis} value={dis.toLowerCase()}>
+                      {dis}
+                    </option>
+                  ))}
+                </select>
+                {errors.district && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Location is required
+                  </p>
                 )}
-              </p>
-            </div>
-          </div>
-          {/* description */}
-          <div className="grid  mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                About your-self
-              </label>
-              <textarea
-                {...register("description", { required: true })}
-                placeholder="Ex. Describe your-self properly"
-                className="h-[100px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-          </div>
-          {/* password and confirm password */}
-          <div className="grid md:grid-cols-2 gap-5 mb-5">
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
-              >
-                Password
-              </label>
-              <input
-                {...register("password", { required: true })}
-                onBlur={(e) => setpass(e.target.value)}
-                type="password"
-                placeholder="Ex. make a strong password"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <p className="text-gray-600 text-xs italic mt-2">
-                {errors.password ? (
-                  <span className="text-red-600">password is required</span>
-                ) : (
-                  ""
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  About Yourself
+                </label>
+                <textarea
+                  {...register("description", { required: true })}
+                  placeholder="Describe yourself properly"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.description && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Description is required
+                  </p>
                 )}
-              </p>
+              </div>
             </div>
-            <div className="w-full">
-              <label
-                htmlFor="input"
-                className="block text-white text-sm font-bold mb-2"
+
+            {/* Password and Confirm Password Row */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </label>
+                <input
+                  {...register("password", { required: true })}
+                  onBlur={(e) => setPass(e.target.value)}
+                  type="password"
+                  placeholder="Enter a strong password"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Password is required
+                  </p>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="conPass"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  {...register("conPass", { required: true })}
+                  onChange={(e) => handleCheckPass(e.target.value)}
+                  type="password"
+                  placeholder="Confirm your password"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00ccb1] focus:border-transparent"
+                />
+                {confirmPassword ? (
+                  <p className="text-green-500 text-sm mt-1">
+                    Password matched
+                  </p>
+                ) : (
+                  <p className="text-gray-500 text-sm mt-1">
+                    Re-enter your password
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-center">
+              <button
+                disabled={!confirmPassword}
+                type="submit"
+                className="w-full bg-[#00ccb1] text-white py-2 px-4 rounded-lg font-semibold hover:bg-[#00b8a0] transition-all duration-300 disabled:bg-gray-400"
               >
-                Confirm Password
-              </label>
-              <input
-                {...register("conPass", { required: true })}
-                onChange={(e) => handleCheckPss(e.target.value)}
-                type="password"
-                placeholder="Ex. confirm your password"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
+                Register
+              </button>
             </div>
+          </form>
+
+          {/* Login Link */}
+          <div className="mt-6 text-center text-sm text-gray-600">
+            <p>
+              Already have an account?{" "}
+              <a href="/auth/login" className="text-[#00ccb1] hover:underline">
+                Login here
+              </a>
+            </p>
           </div>
-          <div className="flex justify-center items-center pt-5">
-            <button
-              disabled={!confirmPassword}
-              className={`bg-[#00ccb1] px-10 py-3 rounded-md text-xl font-bold uppercase disabled:bg-slate-600`}
-              type="submit"
-            >
-              Register
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
