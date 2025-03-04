@@ -71,3 +71,16 @@ export type TImageApiResponse = {
   success: boolean;
   status: number;
 };
+
+export type TBlog = {
+  _id: string;
+  title: string;
+  blog: string;
+  views: number;
+  userId: string;
+  userName: string;
+  bannerPhoto: string;
+  photo: string;
+  keyWords: string[];
+  createdAt: Date;
+};

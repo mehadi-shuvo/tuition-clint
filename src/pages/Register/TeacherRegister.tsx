@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { allDistrictsArray } from "../../assets/district";
 import { TImageApiResponse } from "../Home/types";
+import useTitle from "../../utils/useTitle";
 
 interface IFormInput {
   name: string;
@@ -39,6 +40,8 @@ const TeacherRegister = () => {
     (state: RootState) => state.subjectsSlice.subjects
   );
   const navigate = useNavigate();
+
+  useTitle("Teacher Register");
 
   const handleCheckPass = (value: string) => {
     if (value === pass) {

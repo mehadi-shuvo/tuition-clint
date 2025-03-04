@@ -5,6 +5,7 @@ import { useCreateStudentMutation } from "../../redux/features/student/studentAp
 import toast from "react-hot-toast";
 import { TImageApiResponse } from "../Home/types";
 import { useState } from "react";
+import useTitle from "../../utils/useTitle";
 
 interface IFormInput {
   name: string;
@@ -21,6 +22,8 @@ const StudentRegister = () => {
   const [pass, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  useTitle("Student Register");
 
   const checkConfirmPassword = (value: string) => {
     if (pass === value) {

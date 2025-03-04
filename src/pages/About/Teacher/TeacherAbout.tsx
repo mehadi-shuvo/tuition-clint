@@ -6,10 +6,12 @@ import ContactButton from "../../../components/Buttonts/ContactButton";
 import { useParams } from "react-router-dom";
 import { useGetOneTeacherQuery } from "../../../redux/features/teacher/teacherApi";
 import { watchLoader } from "../../../utils/loader";
+import useTitle from "../../../utils/useTitle";
 
 const TeacherAbout = () => {
   const params = useParams();
   const { data, isLoading } = useGetOneTeacherQuery(params.id as string);
+  useTitle(data?.data.name || "About");
 
   if (isLoading) {
     return (

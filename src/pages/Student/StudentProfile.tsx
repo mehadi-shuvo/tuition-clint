@@ -1,9 +1,4 @@
 import { BackgroundGradientRound } from "../../components/ui/round-gradient";
-import {
-  Education,
-  emailSVG,
-  phoneOutlineSVG,
-} from "../../assets/svgs/localSVGs";
 
 import "../../App.css";
 import { useGetOneStudentByIdQuery } from "../../redux/features/student/studentApi";
@@ -11,8 +6,6 @@ import { useAppSelector } from "../../redux/hooks";
 import { useAuthCurrentUser } from "../../redux/features/auth/authSlice";
 import { TUser } from "../Home/types";
 import { watchLoader } from "../../utils/loader";
-import StudentTuitions from "./StudentTuitions";
-import TuitionPostForm from "./TuitionPostForm";
 import { NavLink } from "react-router-dom";
 const StudentProfile = () => {
   const user: TUser | null = useAppSelector(useAuthCurrentUser);

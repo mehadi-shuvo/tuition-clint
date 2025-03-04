@@ -2,14 +2,21 @@ import { useParams } from "react-router-dom";
 import { useGetBlogQuery } from "../../redux/features/blog/blogApi";
 import moment from "moment";
 import SuggestedBlog from "./SuggestedBlog";
+import { watchLoader } from "../../utils/loader";
+import useTitle from "../../utils/useTitle";
 
 const Blog = () => {
   const params = useParams();
   const { data, isLoading: isLoadingBlog } = useGetBlogQuery(
     params.id as string
   );
+  useTitle(data?.data.title || "Blog");
   if (isLoadingBlog) {
-    return <div> loading</div>;
+    return (
+      <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
+        {watchLoader}
+      </div>
+    );
   }
 
   console.log(data);
@@ -18,11 +25,7 @@ const Blog = () => {
     <div className="pt-16 w-4/5 mx-auto">
       <h4 className="text-3xl font-medium mt-10">{data.data.title}</h4>
       <div className="flex items-center gap-3 mt-3 text-sm text-slate-300 font-medium">
-        <img
-          className="w-8 h-8 rounded-full"
-          src="https://techcloudltd.com/wp-content/uploads/2024/06/male-professional-headshots-1024x638.webp"
-          alt=""
-        />
+        <img className="w-8 h-8 rounded-full" src={data.data.photo} alt="" />
         <p>By {data.data.userName}</p>
         <span> {moment(data.data.createdAt).toNow(true)} ago</span>
         <span className="pl-3 normal-case flex items-center gap-1">
@@ -49,7 +52,7 @@ const Blog = () => {
         </span>
       </div>
       <img
-        src="https://thumbs.dreamstime.com/b/blogging-blog-concepts-ideas-worktable-blogging-blog-concepts-ideas-white-worktable-110423482.jpg"
+        src={data.data.bannerPhoto}
         className="w-full h-[400px] mt-5"
         alt="blog-image"
       />

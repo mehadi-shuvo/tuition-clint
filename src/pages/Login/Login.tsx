@@ -6,6 +6,7 @@ import { setUser } from "../../redux/features/auth/authSlice";
 import { tokenDecoder } from "../../utils/tokenDecoder";
 import EmailVerificationModal from "../../components/ModalBody/EmailVerificationModal";
 import toast from "react-hot-toast";
+import useTitle from "../../utils/useTitle";
 
 interface IFormInput {
   email: string;
@@ -18,6 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
+  useTitle("Login");
 
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {

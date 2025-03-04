@@ -5,13 +5,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { watchLoader } from "../../utils/loader";
 import { PrimaryCard } from "../../components/Cards/PrimaryCard";
 import { allDistrictsArray } from "../../assets/district";
+import useTitle from "../../utils/useTitle";
 
 const Teachers = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
   const [option, setOption] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const { data: teachersData, isLoading } = useGetAllTeachersQuery(params);
-  // isLoading loader must be added;
+  useTitle("tutors");
 
   const { register, handleSubmit } = useForm<TLocation>();
   const onSubmit: SubmitHandler<TLocation> = (data) => {

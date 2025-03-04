@@ -1,22 +1,24 @@
+import React, { useState } from "react";
 import moment from "moment";
 import { useGetAllBlogsQuery } from "../../redux/features/blog/blogApi";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { TParamsQuery } from "../Home/types";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { watchLoader } from "../../utils/loader";
+import { TParamsQuery, TBlog } from "../Home/types";
+import useTitle from "../../utils/useTitle";
 
 type TBlogSearchQuery = {
   queryKey: string;
 };
 
-const AllBlogs = () => {
+const AllBlogs: React.FC = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState("");
-  const { data, isLoading } = useGetAllBlogsQuery(params);
+  const { data, isLoading, error } = useGetAllBlogsQuery(params);
   const { register, handleSubmit } = useForm<TBlogSearchQuery>();
-  const searchHandler: SubmitHandler<TBlogSearchQuery> = (query) => {
-    console.log(query);
+  useTitle("Blogs");
 
+  const searchHandler: SubmitHandler<TBlogSearchQuery> = (query) => {
     setParams([
       { name: "searchKey", value: query.queryKey },
       { name: "page", value: 0 },
@@ -24,11 +26,8 @@ const AllBlogs = () => {
     setSearchQuery(query.queryKey);
   };
 
-  if (isLoading) {
-    return "loading";
-  }
-  const metaData = data.data.meta;
-  // console.log({ metaData });
+  const metaData = data?.data?.meta || {};
+  const blogs = data?.data?.blogs || [];
 
   const nextHandler = () => {
     if (
@@ -43,6 +42,7 @@ const AllBlogs = () => {
       setParams([{ name: "page", value: Number(metaData.page) + 1 }]);
     }
   };
+
   const prevHandler = () => {
     if (
       searchQuery &&
@@ -61,6 +61,22 @@ const AllBlogs = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
+        {watchLoader}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full bg-slate-950 h-screen flex items-center justify-center text-red-500">
+        Error loading blogs. Please try again later.
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="pt-20 w-4/5 mx-auto">
@@ -69,8 +85,9 @@ const AllBlogs = () => {
           className="w-full h-10 mt-5 mb-10"
         >
           <div className="w-[300px] mx-auto">
-            <label className="relative">
+            <label htmlFor="search" className="relative">
               <input
+                id="search"
                 className="w-full text-slate-800 pl-10 py-1 outline-none"
                 {...register("queryKey")}
                 placeholder="ex: science"
@@ -82,7 +99,6 @@ const AllBlogs = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                // onClick={handleSubmit(searchHandler)}
                 className="size-6 absolute left-1 -top-[3px] z-10 text-slate-700 cursor-pointer"
               >
                 <path
@@ -94,13 +110,9 @@ const AllBlogs = () => {
             </label>
           </div>
         </form>
-        {data.data.blogs.map((blog: any) => (
+        {blogs.map((blog: TBlog) => (
           <div className="md:flex secondary-bg gap-5 mb-10" key={blog._id}>
-            <img
-              className="w-96"
-              src="https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="blog-image"
-            />
+            <img className="w-96" src={blog.bannerPhoto} alt="blog-image" />
             <div className="p-5 flex flex-col justify-between">
               <Link to={`blog/${blog._id}`}>
                 <h1 className="text-xl md:text-2xl font-medium mb-3">
@@ -147,10 +159,11 @@ const AllBlogs = () => {
         <div className="flex items-center justify-center">
           <div className="join">
             <button
-              onClick={() => prevHandler()}
+              onClick={prevHandler}
               className={`join-item btn ${
                 Number(metaData.page) === 0 && "hidden"
               }`}
+              aria-label="Previous Page"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,15 +180,16 @@ const AllBlogs = () => {
                 />
               </svg>
             </button>
-            <button className="join-item btn">
-              Page {Number(data.data.meta.page) + 1}
+            <button className="join-item btn" aria-label="Current Page">
+              Page {Number(metaData.page) + 1}
             </button>
             <button
-              onClick={() => nextHandler()}
+              onClick={nextHandler}
               className={`join-item btn ${
                 Number(metaData.totalPages) === Number(metaData.page) + 1 &&
                 "hidden"
               }`}
+              aria-label="Next Page"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

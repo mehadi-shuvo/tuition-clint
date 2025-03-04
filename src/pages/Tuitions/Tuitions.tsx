@@ -9,6 +9,7 @@ import { TLocation, TParamsQuery, TPost } from "../Home/types";
 import { watchLoader } from "../../utils/loader";
 import { allDistrictsArray } from "../../assets/district";
 import { searchSVG } from "../../assets/svgs/localSVGs";
+import useTitle from "../../utils/useTitle";
 
 const Tuitions = () => {
   const [params, setParams] = useState<TParamsQuery[] | undefined>(undefined);
@@ -20,6 +21,7 @@ const Tuitions = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data: thanas } = useGetThanasQuery(paramsDistrict);
   const { data: postData, isLoading } = useGetAllPostsQuery(params);
+  useTitle("Tuitions");
 
   const handleDistrict = (value: string) => {
     const queryParams: TParamsQuery[] = [];

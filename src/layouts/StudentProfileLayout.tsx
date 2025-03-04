@@ -12,6 +12,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import logo from "../assets/logo2.png";
+import useTitle from "../utils/useTitle";
 
 type Inputs = {
   name: string;
@@ -25,14 +26,9 @@ const StudentProfileLayout = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user: TUser | null = useAppSelector(useAuthCurrentUser);
-  const [updateStudent, { isLoading: isUploading }] =
-    useUpdateStudentProfileMutation();
+  const [updateStudent] = useUpdateStudentProfileMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     let validData: { [key: string]: string } = { id: student.data._id };
     for (const [key, value] of Object.entries(data)) {
@@ -40,13 +36,14 @@ const StudentProfileLayout = () => {
         validData[key] = value;
       }
     }
-    console.log(validData);
 
     await updateStudent(validData);
     window.location.reload();
   };
 
   const { isLoading, data: student } = useGetOneStudentByIdQuery(user?.email);
+  useTitle(student?.data.name || "Profile");
+
   if (isLoading) {
     return (
       <div className="w-full bg-slate-950 h-screen flex items-center justify-center">

@@ -5,11 +5,13 @@ import { watchLoader } from "../utils/loader";
 import { logOut } from "../redux/features/auth/authSlice";
 import { BackgroundGradientRound } from "../components/ui/round-gradient";
 import { Toaster } from "react-hot-toast";
+import useTitle from "../utils/useTitle";
 
 const TeacherProfileLayout = () => {
   const dispatch = useAppDispatch();
   let { id } = useParams();
   const { data: teacher, isLoading } = useGetOneTeacherBYIdQuery(id as string);
+  useTitle(teacher?.data.name || "Profile");
   if (isLoading) {
     return (
       <div className="w-full bg-slate-950 h-screen flex items-center justify-center">

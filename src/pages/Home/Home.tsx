@@ -9,11 +9,13 @@ import PostSection from "./PostSection";
 import { watchLoader } from "../../utils/loader";
 import bannerImg from "../../assets/images/undraw_educator_re_ju47.svg";
 import Header from "../../components/ui/Header";
+import useTitle from "../../utils/useTitle";
 
 AOS.init();
 
 const Home = () => {
   const { data, isLoading } = useGetAllTeachersQuery("");
+  useTitle("Home");
   if (isLoading) {
     return (
       <div className="w-full bg-slate-950 h-screen flex items-center justify-center">
