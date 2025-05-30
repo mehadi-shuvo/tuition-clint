@@ -28,15 +28,15 @@ const QNAAccordion = () => {
       >
         <AccordionItemHeading>
           <AccordionItemButton className="bg-slate-300 text-slate-900 text-xl rounded-xl py-4 px-5 flex justify-between items-center">
-            <span> What harsh truths do you prefer to ignore?</span>
+            <span> How do I post a tuition job?</span>
             <span>{isOpen ? chevronUp : chevronDown}</span>
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>
           <p>
-            Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat
-            occaecat ut occaecat consequat est minim minim esse tempor laborum
-            consequat esse adipisicing eu reprehenderit enim.
+            Create a student account, fill in the tuition details (subject,
+            location, budget), and post it. Tutors will contact you via
+            WhatsApp.
           </p>
         </AccordionItemPanel>
       </AccordionItem>
@@ -48,15 +48,15 @@ const QNAAccordion = () => {
       >
         <AccordionItemHeading>
           <AccordionItemButton className="bg-slate-300 text-slate-900 text-xl rounded-xl py-4 px-5 flex justify-between items-center">
-            <span> What harsh truths do you prefer to ignore?</span>
+            <span> How can I apply as a tutor?</span>
             <span>{isOpen ? chevronUp : chevronDown}</span>
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>
           <p>
-            Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat
-            occaecat ut occaecat consequat est minim minim esse tempor laborum
-            consequat esse adipisicing eu reprehenderit enim.
+            Sign up as a tutor, complete your profile with your qualifications
+            and experience, and start browsing tuition posts to connect with
+            students.
           </p>
         </AccordionItemPanel>
       </AccordionItem>
@@ -68,15 +68,15 @@ const QNAAccordion = () => {
       >
         <AccordionItemHeading>
           <AccordionItemButton className="bg-slate-300 text-slate-900 text-xl rounded-xl py-4 px-5 flex justify-between items-center">
-            <span> What harsh truths do you prefer to ignore?</span>
+            <span> Is Tuition Point free to use?</span>
             <span>{isOpen ? chevronUp : chevronDown}</span>
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>
           <p>
-            Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat
-            occaecat ut occaecat consequat est minim minim esse tempor laborum
-            consequat esse adipisicing eu reprehenderit enim.
+            Yes, posting tuition jobs and browsing tutors is completely free for
+            students. Tutors can also create profiles and apply for jobs at no
+            cost.
           </p>
         </AccordionItemPanel>
       </AccordionItem>
@@ -88,15 +88,14 @@ const QNAAccordion = () => {
       >
         <AccordionItemHeading>
           <AccordionItemButton className="bg-slate-300 text-slate-900 text-xl rounded-xl py-4 px-5 flex justify-between items-center">
-            <span> What harsh truths do you prefer to ignore?</span>
+            <span> How do I contact a tutor or student?</span>
             <span>{isOpen ? chevronUp : chevronDown}</span>
           </AccordionItemButton>
         </AccordionItemHeading>
         <AccordionItemPanel>
           <p>
-            Exercitation in fugiat est ut ad ea cupidatat ut in cupidatat
-            occaecat ut occaecat consequat est minim minim esse tempor laborum
-            consequat esse adipisicing eu reprehenderit enim.
+            Once you find a match, simply click the WhatsApp button on their
+            profile or tuition post to start chatting directly.
           </p>
         </AccordionItemPanel>
       </AccordionItem>

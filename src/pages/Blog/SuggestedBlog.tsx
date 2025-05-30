@@ -34,10 +34,7 @@ const SuggestedBlog = ({
             key={blog._id}
             className="flex flex-col h-full secondary-bg shadow-md"
           >
-            <img
-              src="https://blog.feedspot.com/wp-content/uploads/2017/04/elearning.jpg"
-              alt=""
-            />
+            <img src={blog.bannerPhoto} alt="" />
             <Link
               to={`http://localhost:5173/blogs/blog/${blog._id}`}
               className="px-2 py-3 flex-1 flex flex-col justify-between"

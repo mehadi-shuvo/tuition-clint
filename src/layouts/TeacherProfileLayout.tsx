@@ -1,4 +1,4 @@
-import { Navigate, NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import { useGetOneTeacherBYIdQuery } from "../redux/features/teacher/teacherApi";
 import { useAppDispatch } from "../redux/hooks";
 import { watchLoader } from "../utils/loader";
@@ -9,6 +9,7 @@ import useTitle from "../utils/useTitle";
 
 const TeacherProfileLayout = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   let { id } = useParams();
   const { data: teacher, isLoading } = useGetOneTeacherBYIdQuery(id as string);
   useTitle(teacher?.data.name || "Profile");
@@ -33,7 +34,7 @@ const TeacherProfileLayout = () => {
 
   const logoutHandler = () => {
     dispatch(logOut());
-    return <Navigate to="/" replace={true} />;
+    return navigate("/");
   };
 
   return (

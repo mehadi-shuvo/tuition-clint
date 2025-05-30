@@ -51,7 +51,6 @@ const StudentProfileLayout = () => {
       </div>
     );
   }
-  // console.log(student);
 
   const logoutHandler = () => {
     dispatch(logOut());

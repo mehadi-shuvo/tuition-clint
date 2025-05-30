@@ -82,24 +82,26 @@ const AllBlogs: React.FC = () => {
       <div className="pt-20 w-4/5 mx-auto">
         <form
           onSubmit={handleSubmit(searchHandler)}
-          className="w-full h-10 mt-5 mb-10"
+          className="w-full mt-5 mb-10"
         >
-          <div className="w-[300px] mx-auto">
+          <div className="w-full max-w-[300px] mx-auto">
             <label htmlFor="search" className="relative">
+              {/* Search Input */}
               <input
                 id="search"
-                className="w-full text-slate-800 pl-10 py-1 outline-none"
+                className="w-full pl-10 pr-4 py-3 bg-slate-800/50 border-2 border-slate-700/50 rounded-lg outline-none text-white placeholder-slate-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500 focus:ring-opacity-50 transition-all font-medium"
                 {...register("queryKey")}
                 placeholder="ex: science"
                 type="text"
               />
+              {/* Search Icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6 absolute left-1 -top-[3px] z-10 text-slate-700 cursor-pointer"
+                className="size-6 absolute left-2 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"
               >
                 <path
                   strokeLinecap="round"

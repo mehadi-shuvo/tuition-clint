@@ -18,7 +18,7 @@ const schema = z.object({
 type BlogFormData = z.infer<typeof schema>;
 
 const BlogPostForm = () => {
-  const { register, handleSubmit, setValue } = useForm<BlogFormData>({
+  const { register, handleSubmit, setValue, reset } = useForm<BlogFormData>({
     resolver: zodResolver(schema),
   });
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -74,6 +74,7 @@ const BlogPostForm = () => {
     if (result.data.success) {
       console.log({ result: result.data.success });
       toast.success("Blog created successfully");
+      reset();
     }
   };
 

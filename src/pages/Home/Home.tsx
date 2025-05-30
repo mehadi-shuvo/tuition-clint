@@ -7,7 +7,7 @@ import { useGetAllTeachersQuery } from "../../redux/features/teacher/teacherApi"
 import { TTeacher } from "./types";
 import PostSection from "./PostSection";
 import { watchLoader } from "../../utils/loader";
-import bannerImg from "../../assets/images/undraw_educator_re_ju47.svg";
+import bannerImg from "../../assets/images/tuition-point-banner.png";
 import Header from "../../components/ui/Header";
 import useTitle from "../../utils/useTitle";
 
@@ -27,18 +27,18 @@ const Home = () => {
   return (
     <div>
       {/* <Banner></Banner> */}
-      <div className="py-28 grid lg:grid-cols-2 gap-10">
+      <div className="py-28 grid lg:grid-cols-2 gap-10 items-center">
         <div className="px-10">
           <img className="" src={bannerImg} alt="" />
         </div>
         <div className="px-10">
           <h1 className="text-4xl md:text-7xl secondary-font">
-            Your slogan will here
+            Your Bridge to Brighter Futures!
           </h1>
           <p className="mt-4 text-slate-400 text-xs md:text-base font-light">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Temporibus, voluptas. Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Vitae, labore?
+            Tuition Point connects students with top private tutors in
+            Bangladesh. Post tuition needs, find expert tutors, and learn
+            smarter—all in one place!
           </p>
 
           <a

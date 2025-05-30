@@ -19,8 +19,6 @@ const Blog = () => {
     );
   }
 
-  console.log(data);
-
   return (
     <div className="pt-16 w-4/5 mx-auto">
       <h4 className="text-3xl font-medium mt-10">{data.data.title}</h4>
@@ -75,7 +73,7 @@ const Blog = () => {
 
       <div>
         <SuggestedBlog
-          searchTerm={data.data.keyWords[0]}
+          searchTerm={`${data.data.keyWords[0]}`}
           blogId={data.data._id}
         ></SuggestedBlog>
       </div>
