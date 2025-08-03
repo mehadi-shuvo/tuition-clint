@@ -32,7 +32,7 @@ const Navbar = () => {
           >
             <img className="size-10 rounded-full" src={logo} />
 
-            <p className="secondary-font font-black">tuition point</p>
+            <p className="secondary-font font-black">teacher lagbe</p>
           </Link>
         </div>
         {navItems}
