@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 const useTitle = (title: string) => {
   useEffect(() => {
-    document.title = "Tuition Point: " + title;
+    document.title = title + "| Teacher Lagbe";
   }, [title]);
 };
 
